@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       unique: true,
     },
@@ -14,6 +14,7 @@ const userSchema = new Schema(
     },
     type: {
       type: String,
+      required: true,
     },
     friends: {
       type: Schema.Types.ObjectId,

@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: true })); // sets the `body` object in th
 app.use(express.json()); // sets the `body` object in the `request` with the data coming from a request with a `body` (request we'll issue with axios, fetch...)
 
 app.use(logger('dev')); // this middleware will log every response that is issued (with the status code) in the console
+app.use(express.static('client/build')); // makes the client/build folder static
 
 const routes = require('./routes'); // this is our controller and will manage all the routes so we don't have to register any new route handler here
 app.use(routes);
