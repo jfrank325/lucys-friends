@@ -2,7 +2,7 @@ import React from 'react';
 
 const Upload = ({ uploadImage, uploadVideo, loading }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div className="upload">
       <label htmlFor="imgPath">Upload Profile Pic</label>
       <input type="file" name="imgPath" onChange={uploadImage} />
       {/* <label htmlFor="videoPath">Upload Video</label>

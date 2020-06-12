@@ -5,11 +5,11 @@ import Upload from './Upload';
 const Signup = ({ setUser, history }) => {
   const [state, setState] = useState({
     username: '',
+    email: '',
     password: '',
     profilePic: '',
     type: '',
     loading: 'waiting',
-    // message: 'Error for U',
   });
 
   const handleChange = (event) => {
@@ -37,11 +37,16 @@ const Signup = ({ setUser, history }) => {
     if (state.loading !== 'loading') {
       const res = await axios.post('/api/auth/signup', {
         username: state.username,
+        email: state.email,
         password: state.password,
         profilePic: state.profilePic,
         type: state.type,
       });
-      history.push('/');
+      if (state.type === 'BABY') {
+        history.push('/profile');
+      } else {
+        history.push('/friend/profile');
+      }
       // update state for user in <App/>
       setUser(res.data);
     }
@@ -50,29 +55,35 @@ const Signup = ({ setUser, history }) => {
   return (
     <>
       <form className="login-form" onSubmit={handleSubmit}>
-        <div className="auth-input">
+        <div className="auth-select">
           <label htmlFor="type">Are you signing up as a baby or a friend? </label>
           <select value={state.type} name="type" onChange={handleChange}>
+            <option name="type" value=""></option>
             <option name="type" value="BABY">
-              BABY
+              BABY/CHILD
             </option>
             <option name="type" value="FRIEND">
               FRIEND
             </option>
           </select>
         </div>
+
         <div className="auth-input">
           <label htmlFor="username">Username: </label>
           <input type="text" id="username" name="username" value={state.username} onChange={handleChange} />
         </div>
         <div className="auth-input">
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" value={state.password} onChange={handleChange} />
+          <label htmlFor="email">Email: </label>
+          <input type="text" id="username" name="email" value={state.email} onChange={handleChange} />
         </div>
+        <div className="auth-input">
+          <label htmlFor="password">Password: </label>
+          <input type="password" name="password" id="username" value={state.password} onChange={handleChange} />
+        </div>
+
         <Upload uploadImage={uploadImage} loading={state.loading} />
-        <button type="submit">Sign up</button>
+        <button type="submit">Sign Up</button>
       </form>
-      {state.message && <p>{state.message}</p>}
     </>
   );
 };

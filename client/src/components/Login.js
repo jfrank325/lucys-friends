@@ -21,8 +21,11 @@ const Login = ({ setUser, history }) => {
         password: state.password,
       })
       .then((response) => {
-        // redirect
-        history.push('/');
+        if (state.type === 'BABY') {
+          history.push('/profile');
+        } else {
+          history.push('/friend/profile');
+        }
         // update state for user in <App/>
         setUser(response.data);
       })
@@ -43,7 +46,7 @@ const Login = ({ setUser, history }) => {
           <label htmlFor="password">Password: </label>
           <input type="password" name="password" id="password" value={state.password} onChange={handleChange} />
         </div>
-        <button type="submit">Sign in</button>
+        <button type="submit">Log In</button>
       </form>
       {state.message && <p>{state.message}</p>}
     </>

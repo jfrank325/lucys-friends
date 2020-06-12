@@ -7,6 +7,9 @@ const userSchema = new Schema(
       type: String,
       unique: true,
     },
+    email: {
+      type: String,
+    },
     password: String,
     profilePic: String,
     babies: {
@@ -20,6 +23,12 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    _requests: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     _messages: [
       {
         type: Schema.Types.ObjectId,
