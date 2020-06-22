@@ -22,15 +22,10 @@ const Navbar = ({ user, setUser }) => {
         {user && (
           <div className="link-container">
             <div className="auth-links">
-              {user.type === 'BABY' ? (
-                <Link to="/profile">
-                  <img src={Profile} alt="Profile" />
-                </Link>
-              ) : (
-                <Link to="/friend/profile">
-                  <img src={Profile} alt="Profile" />
-                </Link>
-              )}
+              <Link to="/friend/profile">
+                <img src={Profile} alt="Profile" />
+              </Link>
+
               <Link onClick={logout} to="/">
                 Log Out
               </Link>

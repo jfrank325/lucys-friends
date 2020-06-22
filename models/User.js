@@ -19,10 +19,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    friends: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     _requests: [
       {
         type: Schema.Types.ObjectId,
@@ -32,19 +34,19 @@ const userSchema = new Schema(
     _messages: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Messages',
+        ref: 'Message',
       },
     ],
     _seenMessages: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Messages',
+        ref: 'Message',
       },
     ],
     _authoredMessages: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Messages',
+        ref: 'Message',
       },
     ],
   },

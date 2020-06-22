@@ -50,18 +50,65 @@ router.get('/babies', (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({
+        message: { message: 'Could not get babies' },
+      });
+    });
+});
+
+router.get('/requesters/:id', (req, res) => {
+  const id = req.params.id;
+  User.findById(id)
+    .populate('_requests')
+    .populate('friends')
+    .then((requesters) => {
+      res.json(requesters);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: `There was a problem getting this user's friend requests` });
+    });
+});
+
+router.post('/accepted/:id', (req, res) => {
+  friendId = req.params.id;
+  babyId = req.body.baby;
+  User.updateOne({ _id: friendId }, { $addToSet: { friends: babyId } }).exec();
+  User.updateOne({ _id: babyId }, { $addToSet: { friends: friendId } })
+    .exec()
+    .then((res) => {
+      res.json({ message: 'new friend added' });
+      console.log('This is your friend', babyId);
+    })
+    .catch((err) => {
+      res.status(500).json({
         message: err.message,
       });
     });
 });
 
-router.post('/request/:id', (req, res) => {
-  const babyId = req.params.id;
-  const requester = req.body;
-  User.updateOne({ _id: babyId }, { $addToSet: { _requests: requester } })
+router.post(`/request/:id`, (req, res) => {
+  const id = req.params.id;
+  const requester = req.body.requester;
+  console.log(requester, id);
+  User.updateOne({ _id: id }, { $addToSet: { _requests: requester } })
     .exec()
     .then((res) => {
-      res.json({ message: 'saved' });
+      res.json({ message: 'new friend request' });
+      console.log('This is your user', req.user);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
+
+router.post('/denied/:id', (req, res) => {
+  const requesterId = req.params.id;
+  const babyId = req.body.requester;
+  User.updateOne({ _id: babyId }, { $pull: { _requests: requesterId } })
+    .exec()
+    .then((res) => {
+      res.json({ message: 'request denied' });
     })
     .catch((err) => {
       res.status(500).json({
@@ -77,7 +124,7 @@ router.post('/login', (req, res, next) => {
     }
     if (!user) {
       // no user found with username or password didn't match
-      return res.status(400).json({ message: info.message });
+      return res.status(400).json({ message: `no user found with username or password didn't match` });
     }
     // passport req.login
     req.login(user, (err) => {
