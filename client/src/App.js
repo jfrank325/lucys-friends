@@ -21,21 +21,15 @@ const App = (props) => {
       <div className="main-container">
         <Route
           path="/signup"
-          render={(props) => (
-            <Signup
-              history={props.history}
-              // {...props}
-              setUser={setThisUser}
-            />
-          )}
+          render={(props) => <Signup history={props.history} {...props} setUser={setThisUser} />}
           // component={Signup}
         />
-        <Route path="/login" render={(props) => <Login history={props.history} setUser={setThisUser} />} />
+        <Route exact path="/login" render={(props) => <Login history={props.history} setUser={setThisUser} />} />
 
         {/* <Route exact path="/" render={(props) => <Posts {...props} user={user} />} /> */}
 
         {/* <Route path="/profile" render={() => <BabyProfile user={user} />} /> */}
-        <Route path="/friend/profile" render={() => <FriendProfile user={user} setUser={setThisUser} />} />
+        <Route exact path="/friend/profile" render={() => <FriendProfile user={user} setUser={setThisUser} />} />
 
         {/* <Route
           exact

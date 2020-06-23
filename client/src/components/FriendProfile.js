@@ -7,12 +7,13 @@ const FriendProfile = ({ user }) => {
   const [query, setQuery] = useState('');
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [createMessage, setCreateMessage] = useState(false);
+
+  let queryCheck = query.length > 0;
 
   useEffect(() => {
-    if (query.length > 0) {
-      getBabies();
-    }
-  }, []);
+    getBabies();
+  }, [queryCheck]);
 
   const getBabies = async () => {
     const res = await axios.get('/api/auth/babies');
@@ -32,6 +33,7 @@ const FriendProfile = ({ user }) => {
     } else {
       const res = await axios.get(`/api/auth/requesters/${user._id}`);
       setFriends(res.data.friends);
+      console.log(res.data.friends);
     }
   };
 
@@ -51,10 +53,8 @@ const FriendProfile = ({ user }) => {
       requester: user._id,
     });
     console.log(res);
-    console.log(
-      'requests',
-      babies.map((baby) => baby._requests)
-    );
+
+    return <p>Your friend request was sent!</p>;
   };
 
   const acceptRequest = async (id) => {
@@ -70,11 +70,16 @@ const FriendProfile = ({ user }) => {
     });
   };
 
-  let uniqueFriends = friends.filter((friend) => [...new Set(friends)].includes(friend));
+  const toggleCreateMessage = () => {
+    setCreateMessage(!createMessage);
+  };
 
   return (
     <div className="friend-profile-container">
       <h1>{user.username}</h1>
+      <h3>Search for Babies You Know</h3>
+      <input type="text" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)} />
+      {queryCheck && babies.map((baby) => <SendRequest key={baby._id} baby={baby} sendRequest={sendRequest} />)}
       <h4>Pending Friend Requests</h4>
       {requesters.map((requester) => (
         <>
@@ -84,14 +89,13 @@ const FriendProfile = ({ user }) => {
         </>
       ))}
       <img src={user.profilePic} alt="Profile" />
-      {uniqueFriends.map((friend) => (
+      {friends.map((friend) => (
         <div className="friend-card">
           <h3>{friend.username}</h3>
           <img src={friend.profilePic} alt={friend.username} />
+          <button onClick={toggleCreateMessage}>Send {friend.username} a new message</button>
         </div>
       ))}
-      <input type="text" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)} />
-      {query.length > 0 && babies.map((baby) => <SendRequest key={baby._id} baby={baby} sendRequest={sendRequest} />)}
     </div>
   );
 };

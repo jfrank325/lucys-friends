@@ -21,11 +21,11 @@ const Login = ({ setUser, history }) => {
         password: state.password,
       })
       .then((response) => {
-        if (state.type === 'BABY') {
-          history.push('/profile');
-        } else {
-          history.push('/friend/profile');
-        }
+        // if (state.type === 'BABY') {
+        //   history.push('/profile');
+        // } else {
+        history.push('/friend/profile');
+        // }
         // update state for user in <App/>
         setUser(response.data);
       })

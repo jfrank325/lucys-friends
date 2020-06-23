@@ -5,7 +5,6 @@ const SendRequest = ({ baby, sendRequest }) => {
   return (
     <>
       <button onClick={() => sendRequest(id)}>{baby.username}</button>
-      <p>{baby._requests}</p>
     </>
   );
 };
