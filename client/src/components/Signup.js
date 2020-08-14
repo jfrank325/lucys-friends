@@ -1,6 +1,48 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Upload from './Upload';
+import styled from 'styled-components';
+
+const SignupWrapper = styled.div`
+  .login-form {
+    margin: 0 auto;
+    max-width: 20rem;
+    padding-top: 8rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+    .auth-select {
+      margin: 2rem 0;
+      label {
+      }
+      select {
+        background-color: var(--sunrise);
+        border: none;
+        border-radius: 25px;
+        padding: 0.3rem 0.5rem;
+        option {
+        }
+      }
+    }
+    .auth-input {
+      text-align: left;
+      margin: 0.5rem 0;
+      label {
+      }
+      input {
+        border: none;
+        border-radius: 25px;
+        font-size: 1.2rem;
+        padding: 0 0.3rem;
+      }
+    }
+    button {
+      margin-top: 1.5rem;
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+`;
 
 const Signup = ({ setUser, history }) => {
   const [state, setState] = useState({
@@ -53,7 +95,7 @@ const Signup = ({ setUser, history }) => {
   };
 
   return (
-    <>
+    <SignupWrapper>
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="auth-select">
           <label htmlFor="type">Are you signing up as a baby or a friend? </label>
@@ -84,7 +126,7 @@ const Signup = ({ setUser, history }) => {
         <Upload uploadImage={uploadImage} loading={state.loading} />
         <button type="submit">Sign Up</button>
       </form>
-    </>
+    </SignupWrapper>
   );
 };
 

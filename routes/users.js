@@ -55,6 +55,17 @@ router.get('/babies', (req, res) => {
     });
 });
 
+router.get('/messages', (req, res) => {
+  User.findById(req.user._id)
+    .populate('_messages')
+    .then((messages) => {
+      res.json(messages);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'We could not retrieve messages' });
+    });
+});
+
 router.get('/requesters/:id', (req, res) => {
   const id = req.params.id;
   User.findById(id)

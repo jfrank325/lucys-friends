@@ -1,13 +1,25 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const ProfileWrapper = styled.div`
+  .profile-container {
+    padding-top: 10rem;
+    img {
+      max-width: 50rem;
+    }
+  }
+`;
 
 const BabyProfile = ({ user }) => {
   return (
-    <div className="profile-container">
-      <img src={user.profilePic} alt="Profile" />
-      {/* {requesters.map((requester) => (
+    <ProfileWrapper>
+      <div className="profile-container">
+        <img src={user.profilePic} alt="Profile" />
+        {/* {requesters.map((requester) => (
         <p>{requester.username}</p>
       ))} */}
-    </div>
+      </div>
+    </ProfileWrapper>
   );
 };
 

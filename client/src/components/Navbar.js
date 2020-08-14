@@ -3,6 +3,39 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import BackArrow from '../images/arrowLW.png';
 import Profile from '../images/profile.png';
+import styled from 'styled-components';
+
+const NavbarWrapper = styled.header`
+  .navbar {
+    position: fixed;
+    min-height: 4rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--sky);
+    h1 {
+      font-weight: 500;
+      color: var(--sunrise);
+      font-size: 3rem;
+      margin-left: 9rem;
+    }
+    .link-container {
+      display: flex;
+      align-items: center;
+      .auth-links a {
+        padding: 0 1rem;
+        color: var(--sunrise);
+        font-weight: 800;
+        font-size: 1.3rem;
+      }
+      .auth-links img {
+        width: 2rem;
+        padding: 0 1rem;
+      }
+    }
+  }
+`;
 
 const Navbar = ({ user, setUser }) => {
   const logout = () => {
@@ -12,7 +45,7 @@ const Navbar = ({ user, setUser }) => {
   };
 
   return (
-    <header>
+    <NavbarWrapper>
       <nav className="navbar">
         <Link to="/">{/* <img src={BackArrow} alt="Logo" /> */}</Link>
         <Link to="/">
@@ -41,7 +74,7 @@ const Navbar = ({ user, setUser }) => {
           </div>
         )}
       </nav>
-    </header>
+    </NavbarWrapper>
   );
 };
 

@@ -1,96 +1,96 @@
-/* Color */
+// /* Color */
 
-:root {
-  /* Primary */
-  --sunrise: rgb(65, 156, 184); /* Primary call to action color */
-  --sky: #cebb11; /* Secondary call to action color */
-  --daylight: rgb(245, 245, 245);
-  --bright: rgb(255, 255, 255);
-  --gray: rgb(194, 194, 194);
-  --midnight: rgb(17, 17, 17);
-}
+// :root {
+//   /* Primary */
+//   --sunrise: rgb(65, 156, 184); /* Primary call to action color */
+//   --sky: #cebb11; /* Secondary call to action color */
+//   --daylight: rgb(245, 245, 245);
+//   --bright: rgb(255, 255, 255);
+//   --gray: rgb(194, 194, 194);
+//   --midnight: rgb(17, 17, 17);
+// }
 
-* {
-  margin: 0;
-  padding: 0;
-}
+// * {
+//   margin: 0;
+//   padding: 0;
+// }
 
-*:focus {
-  outline: none;
-}
+// *:focus {
+//   outline: none;
+// }
 
-*:active {
-  outline: none;
-}
+// *:active {
+//   outline: none;
+// }
 
-button {
-  color: var(--bright);
-  background-color: var(--sky);
-  border-radius: 25px;
-  border: none;
-  padding: 0.5rem 0.5rem;
-}
+// button {
+//   color: var(--bright);
+//   background-color: var(--sky);
+//   border-radius: 25px;
+//   border: none;
+//   padding: 0.5rem 0.5rem;
+// }
 
-body {
-  background-color: #f1f1f1;
-  font-size: 16px;
-  // font-family: Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-family: 'Balsamiq Sans', 'Open Sans', Arial;
-  font-weight: 600;
-  line-height: 1.6rem;
-  letter-spacing: 0.05rem;
-  scroll-behavior: smooth;
-  text-align: center;
-}
+// body {
+//   background-color: #f1f1f1;
+//   font-size: 16px;
+//   // font-family: Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+//   font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+//   font-weight: 600;
+//   line-height: 1.6rem;
+//   letter-spacing: 0.05rem;
+//   scroll-behavior: smooth;
+//   text-align: center;
+// }
 
-a {
-  text-decoration: none;
-}
+// a {
+//   text-decoration: none;
+// }
 
-img {
-  width: 15rem;
-}
+// img {
+//   width: 15rem;
+// }
 
-@keyframes donut-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+// @keyframes donut-spin {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(360deg);
+//   }
+// }
 
-//Navbar
+// //Navbar
 
-.navbar {
-  position: fixed;
-  min-height: 4rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--sky);
-  h1 {
-    font-weight: 500;
-    color: var(--sunrise);
-    font-size: 3rem;
-    margin-left: 9rem;
-  }
-  .link-container {
-    display: flex;
-    align-items: center;
-    .auth-links a {
-      padding: 0 1rem;
-      color: var(--sunrise);
-      font-weight: 800;
-      font-size: 1.3rem;
-    }
-    .auth-links img {
-      width: 2rem;
-      padding: 0 1rem;
-    }
-  }
-}
+// .navbar {
+//   position: fixed;
+//   min-height: 4rem;
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background-color: var(--sky);
+//   h1 {
+//     font-weight: 500;
+//     color: var(--sunrise);
+//     font-size: 3rem;
+//     margin-left: 9rem;
+//   }
+//   .link-container {
+//     display: flex;
+//     align-items: center;
+//     .auth-links a {
+//       padding: 0 1rem;
+//       color: var(--sunrise);
+//       font-weight: 800;
+//       font-size: 1.3rem;
+//     }
+//     .auth-links img {
+//       width: 2rem;
+//       padding: 0 1rem;
+//     }
+//   }
+// }
 
 //Signup
 
