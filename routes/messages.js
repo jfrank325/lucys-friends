@@ -13,8 +13,8 @@ router.post('/messages', (req, res) => {
   }).then((messageDocument) => {
     const messageId = messageDocument._id;
     res.json(messageDocument);
-    User.findByIdAndUpdate(friend._id, { $addToSet: { _messages: messageId } }).exec();
-    User.findByIdAndUpdate(_author, { $addToSet: { _authoredMessages: messageId } }.exec());
+    User.findByIdAndUpdate(friend._id, { $addToSet: { _messages: messageId } }, { new: true }).exec();
+    User.findByIdAndUpdate(req.user._id, { $addToSet: { _authoredMessages: messageId } }, { new: true }).exec();
   });
   //   .catch((err) => {
   //     res.status(500).json({

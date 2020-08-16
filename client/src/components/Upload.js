@@ -4,13 +4,17 @@ import styled from 'styled-components';
 const UploadWrapper = styled.div`
   .upload {
     padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     label {
-    }
-    input {
       background-color: var(--sunrise);
       border: none;
       border-radius: 25px;
       padding: 0.3rem 0.5rem;
+    }
+    input[type='file'] {
+      display: none;
     }
     .donut {
       display: inline-block;
@@ -18,6 +22,7 @@ const UploadWrapper = styled.div`
       border-left-color: var(--sky);
       border-radius: 50%;
       width: 40px;
+      margin-top: 2rem;
       height: 40px;
       animation: donut-spin 1.2s linear infinite;
     }
@@ -27,6 +32,12 @@ const UploadWrapper = styled.div`
       -moz-appearance: none;
       appearance: none;
     }
+    h4 {
+      margin-top: 2rem;
+    }
+    .uploads {
+      display: flex;
+    }
   }
 `;
 
@@ -34,11 +45,23 @@ const Upload = ({ uploadImage, uploadVideo, loading }) => {
   return (
     <UploadWrapper>
       <div className="upload">
-        <label htmlFor="imgPath">Upload Profile Pic</label>
-        <input type="file" name="imgPath" onChange={uploadImage} />
-        {/* <label htmlFor="videoPath">Upload Video</label>
-      <input style={{ marginBottom: '1.9rem' }} type="file" name="videoPath" onChange={uploadVideo} /> */}
-        {loading === 'loading' ? <div className="donut"></div> : loading === 'finished' ? <h4>Finished</h4> : <> </>}
+        <div className="uploads">
+          <label htmlFor="imgPath">
+            <input type="file" id="imgPath" name="imgPath" onChange={uploadImage} />
+            Upload Image
+          </label>
+          <label htmlFor="videoPath">
+            <input
+              style={{ marginBottom: '1.9rem' }}
+              type="file"
+              name="videoPath"
+              id="videoPath"
+              onChange={uploadVideo}
+            />{' '}
+            Upload Video
+          </label>
+        </div>
+        {loading === 'loading' ? <div className="donut"></div> : loading === 'finished' ? <h4>Uploaded!</h4> : <> </>}
       </div>
     </UploadWrapper>
   );

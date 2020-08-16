@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Upload from './Upload';
+import WebcamCapture from './WebcamCapture';
 
-const MessageForm = ({ toggleCreateMessage, createMessage, friend, user, refresh }) => {
+const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
   const [message, setMessage] = useState({
     content: '',
     image: '',
     video: '',
+
     loading: 'waiting',
   });
 
@@ -14,7 +16,7 @@ const MessageForm = ({ toggleCreateMessage, createMessage, friend, user, refresh
     const files = e.target.files;
     const data = new FormData();
     data.append('file', files[0]);
-    data.append('upload_preset', 'gagwud8b');
+    data.append('upload_preset', 'hyvmowkc');
     setMessage({ ...message, loading: 'loading' });
 
     const res = await fetch('	https://api.cloudinary.com/v1_1/dv1aih6td/image/upload', {
@@ -30,7 +32,7 @@ const MessageForm = ({ toggleCreateMessage, createMessage, friend, user, refresh
     const files = e.target.files;
     const data = new FormData();
     data.append('file', files[0]);
-    data.append('upload_preset', 'gagwud8b');
+    data.append('upload_preset', 'hyvmowkc');
     setMessage({ ...message, loading: 'loading' });
     const res = await fetch('	https://api.cloudinary.com/v1_1/dv1aih6td/video/upload', {
       method: 'POST',
@@ -68,6 +70,7 @@ const MessageForm = ({ toggleCreateMessage, createMessage, friend, user, refresh
     <form className="create-message" encType="multipart/form-data" onSubmit={handleSubmit}>
       <label htmlFor="content">Content</label>
       <input id="content" name="content" value={message.content} onChange={handleChange} />
+      <WebcamCapture />
       <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
       <button className="button" style={{ margin: '2rem auto 0 auto' }} onClick={refresh}>
         Submit Post

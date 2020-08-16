@@ -1,13 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import SendRequest from './SendRequest';
 import axios from 'axios';
 import styled from 'styled-components';
-import Friend from './Friend';
 import Requests from './Requests';
+import Friends from './Friends';
+import Profile from '../images/profile.png';
+import Babies from './Babies';
 
 const FriendProfileWrapper = styled.div`
-  .friend-profile-container {
-    padding-top: 10rem;
+  input {
+    border: none;
+    border-top: solid 0.2rem var(--sky);
+    border-bottom: solid 0.2rem var(--sky);
+    background-color: white;
+    margin: 0.5rem 0.5rem;
+    font-size: 1.5rem;
+    height: 3rem;
+    overflow-wrap: normal;
+    text-align: center;
+    color: var(--sky);
+    font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+    &::placeholder {
+      color: var(--sunrise);
+    }
+    &:focus {
+      ${'' /* outline: none; */}
+      ${'' /* background-color: var(--sky); */}
+    }
+    &:focus::-webkit-input-placeholder {
+      color: transparent;
+    }
+  }
+  h1 {
+    color: var(--sky);
+    padding: 1rem 0;
+  }
+  img {
+    height: 20rem;
+    width: auto;
   }
 `;
 
@@ -18,19 +47,18 @@ const FriendProfile = ({ user }) => {
   const [friends, setFriends] = useState([]);
   const [messages, setMessages] = useState([]);
 
-  let queryCheck = query.length > 0;
-
-  useEffect(() => {
-    getBabies();
-  }, [queryCheck]);
-
-  const getBabies = async () => {
-    const res = await axios.get('/api/auth/babies');
-    setBabies(res.data);
+  const getPeople = async () => {
+    try {
+      const res = await axios.get('/api/auth/babies');
+      setBabies(res.data);
+      console.log(res.data, 'people');
+    } catch {
+      console.log('Could not get babies');
+    }
   };
 
   useEffect(() => {
-    getRequests();
+    getPeople();
   }, []);
 
   const getRequests = async () => {
@@ -49,6 +77,11 @@ const FriendProfile = ({ user }) => {
       console.log(res.data.friends);
     }
   };
+
+  useEffect(() => {
+    getRequests();
+  }, [requesters.length]);
+
   const getMessages = async () => {
     try {
       const res = await axios.get(`/api/auth/messages`);
@@ -63,39 +96,41 @@ const FriendProfile = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    let filteredbabies = [...babies].filter(
-      (baby) => baby.type === 'BABY' && baby.username.toLowerCase().includes(query.toLowerCase())
-    );
+    let filteredbabies = [...babies].filter((baby) => baby.username.toLowerCase().includes(query.toLowerCase()));
     console.log({ filteredbabies });
     if (query.length > 0) {
       setBabies(filteredbabies);
     } else {
-      getBabies();
+      getPeople();
     }
   }, [query]);
 
-  const sendRequest = async (id) => {
-    const res = await axios.post(`/api/auth/request/${id}`, {
-      requester: user._id,
-    });
-    console.log(res);
-
-    return <p>Your friend request was sent!</p>;
-  };
+  console.log({ query });
 
   return (
     <FriendProfileWrapper>
-      <div className="friend-profile-container">
-        <h3>Search for Babies You Know</h3>
-        <input type="text" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)} />
-        {queryCheck && babies.map((baby) => <SendRequest key={baby._id} baby={baby} sendRequest={sendRequest} />)}
-        <h1>{user.username}</h1>
-        <img src={user.profilePic} alt="Profile" />
-        <Requests requesters={requesters} user={user} />
-        {friends.map((friend) => (
-          <Friend refresh={getBabies} messages={messages} friend={friend} key={friend._id} user={user} />
-        ))}
-      </div>
+      {user.type === 'FRIEND' && (
+        <div>
+          {/* <h3>Search for Babies You Know</h3> */}
+          <input type="text" placeholder="Search For Babies" value={query} onChange={(e) => setQuery(e.target.value)} />
+        </div>
+      )}
+      {user.type === 'BABY' && (
+        <div>
+          {/* <h3>Search for Friends You Know</h3> */}
+          <input
+            type="text"
+            placeholder="Search For Friends"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      )}
+      {query.length > 0 && <Babies babies={babies} />}
+      <h1>{user.username}</h1>
+      <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" />
+      {user.type === 'BABY' && <Requests requesters={requesters} user={user} />}
+      <Friends refresh={getPeople} messages={messages} friends={friends} user={user} />
     </FriendProfileWrapper>
   );
 };

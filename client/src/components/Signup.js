@@ -10,6 +10,7 @@ const SignupWrapper = styled.div`
     padding-top: 8rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     font-size: 1.3rem;
     .auth-select {
       margin: 2rem 0;
@@ -53,6 +54,7 @@ const Signup = ({ setUser, history }) => {
     type: '',
     loading: 'waiting',
   });
+  const [error, setError] = useState();
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
@@ -77,29 +79,47 @@ const Signup = ({ setUser, history }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (state.loading !== 'loading') {
-      const res = await axios.post('/api/auth/signup', {
-        username: state.username,
-        email: state.email,
-        password: state.password,
-        profilePic: state.profilePic,
-        type: state.type,
-      });
-      if (state.type === 'BABY') {
-        history.push('/profile');
-      } else {
-        history.push('/friend/profile');
+      try {
+        const res = await axios.post('/api/auth/signup', {
+          username: state.username,
+          email: state.email,
+          password: state.password,
+          profilePic: state.profilePic,
+          type: state.type,
+        });
+        if (state.type === 'BABY') {
+          history.push('/profile');
+        } else {
+          history.push('/friend/profile');
+        }
+        // update state for user in <App/>
+        setUser(res.data);
+      } catch (error) {
+        setError(error?.response?.data?.message);
       }
-      // update state for user in <App/>
-      setUser(res.data);
     }
   };
 
   return (
     <SignupWrapper>
       <form className="login-form" onSubmit={handleSubmit}>
+        {error && <h3 style={{ color: 'red', paddingBottom: '2rem' }}>{error}</h3>}
+
+        <div className="auth-input">
+          <label htmlFor="username">Username: </label>
+          <input type="text" required name="username" value={state.username} onChange={handleChange} />
+        </div>
+        <div className="auth-input">
+          <label htmlFor="email">Email: </label>
+          <input type="text" required name="email" value={state.email} onChange={handleChange} />
+        </div>
+        <div className="auth-input">
+          <label htmlFor="password">Password: </label>
+          <input type="password" required name="password" value={state.password} onChange={handleChange} />
+        </div>
         <div className="auth-select">
           <label htmlFor="type">Are you signing up as a baby or a friend? </label>
-          <select value={state.type} name="type" onChange={handleChange}>
+          <select value={state.type} name="type" required onChange={handleChange}>
             <option name="type" value=""></option>
             <option name="type" value="BABY">
               BABY/CHILD
@@ -108,19 +128,6 @@ const Signup = ({ setUser, history }) => {
               FRIEND
             </option>
           </select>
-        </div>
-
-        <div className="auth-input">
-          <label htmlFor="username">Username: </label>
-          <input type="text" id="username" name="username" value={state.username} onChange={handleChange} />
-        </div>
-        <div className="auth-input">
-          <label htmlFor="email">Email: </label>
-          <input type="text" id="username" name="email" value={state.email} onChange={handleChange} />
-        </div>
-        <div className="auth-input">
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="username" value={state.password} onChange={handleChange} />
         </div>
 
         <Upload uploadImage={uploadImage} loading={state.loading} />

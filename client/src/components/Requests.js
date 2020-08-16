@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 
 const Requests = ({ requesters, user }) => {
   const [showRequests, setShowRequests] = useState();
+  console.log(requesters, 'requesters');
+
+  useEffect(() => {}, [requesters]);
+
   const acceptRequest = async (id) => {
     const res = await axios.post(`/api/auth/accepted/${id}`, {
       baby: user._id,
@@ -27,20 +31,26 @@ const Requests = ({ requesters, user }) => {
   };
 
   return (
-    <div>
-      <h4 onClick={toggleRequests}>Friend Requests</h4>
-      {requesters.map((requester) => (
-        <>
-          {showRequests && (
-            <div>
-              <p>{requester.username}</p>
-              <button onClick={() => acceptRequest(requester._id)}>Accept</button>
-              <button onClick={() => denyRequest(requester._id)}>Deny</button>
-            </div>
-          )}
-        </>
-      ))}
-    </div>
+    <>
+      {requesters.length > 0 ? (
+        <div>
+          <h4 onClick={toggleRequests}>Friend Requests</h4>
+          {requesters.map((requester) => (
+            <>
+              {showRequests && (
+                <div>
+                  <p>{requester.username}</p>
+                  <button onClick={() => acceptRequest(requester._id)}>Accept</button>
+                  <button onClick={() => denyRequest(requester._id)}>Deny</button>
+                </div>
+              )}
+            </>
+          ))}
+        </div>
+      ) : (
+        <h4>No Pending Requests</h4>
+      )}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Message = ({ message, img, name, showMessage, toggleMessage }) => {
+const Message = ({ message, showMessage, toggleMessage }) => {
   const { content, image, video } = message;
 
   return (
@@ -8,7 +8,7 @@ const Message = ({ message, img, name, showMessage, toggleMessage }) => {
       {showMessage && (
         <div>
           {content && <h3>{content}</h3>}
-          {image && <img src={image} />}
+          {image && <img src={image} alt="Smile" />}
           {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />}
         </div>
       )}

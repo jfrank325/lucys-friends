@@ -13,10 +13,10 @@ const NavbarWrapper = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--sky);
+    background-color: var(--sunrise);
     h1 {
       font-weight: 500;
-      color: var(--sunrise);
+      color: var(--sky);
       font-size: 3rem;
       margin-left: 9rem;
     }
@@ -25,7 +25,7 @@ const NavbarWrapper = styled.header`
       align-items: center;
       .auth-links a {
         padding: 0 1rem;
-        color: var(--sunrise);
+        color: var(--sky);
         font-weight: 800;
         font-size: 1.3rem;
       }

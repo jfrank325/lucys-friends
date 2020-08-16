@@ -4,8 +4,8 @@ const GlobalStyle = createGlobalStyle`
 
 :root {
   /* Primary */
-  --sunrise: rgb(65, 156, 184); /* Primary call to action color */
-  --sky: #cebb11; /* Secondary call to action color */
+  --sunrise: #cebb11; /* Primary call to action color */
+  --sky: rgb(65, 156, 184); /* Secondary call to action color */
   --daylight: rgb(245, 245, 245);
   --bright: rgb(255, 255, 255);
   --gray: rgb(194, 194, 194);
@@ -43,6 +43,7 @@ body {
   letter-spacing: 0.05rem;
   scroll-behavior: smooth;
   text-align: center;
+  
 }
 
 a {
