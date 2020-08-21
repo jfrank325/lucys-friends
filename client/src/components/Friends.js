@@ -6,6 +6,7 @@ const FriendsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  flex-wrap: wrap;
 `;
 
 const Friends = ({ refresh, messages, friends, user }) => {

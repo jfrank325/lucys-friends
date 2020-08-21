@@ -31,6 +31,7 @@ button {
   border-radius: 25px;
   border: none;
   padding: 0.5rem 0.5rem;
+  font-family: 'Balsamiq Sans', 'Open Sans', Arial;
 }
 
 body {

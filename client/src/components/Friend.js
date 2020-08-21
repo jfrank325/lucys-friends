@@ -6,10 +6,15 @@ import styled from 'styled-components';
 import Profile from '../images/profile.png';
 
 const FriendWrapper = styled.div`
-  padding: 2rem 1.5rem 0 1.5rem;
+  padding: 1rem;
+  background-color: var(--sunrise);
+  margin: 1rem;
+  border-radius: 5px;
+
   img {
-    height: 20rem;
     width: auto;
+    max-width: 18rem;
+    max-height: 20rem;
   }
 `;
 

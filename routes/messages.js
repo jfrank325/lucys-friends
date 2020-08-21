@@ -11,17 +11,40 @@ router.post('/messages', (req, res) => {
     video,
     friend,
     _author: req.user._id,
-  }).then((messageDocument) => {
-    const messageId = messageDocument._id;
-    res.json(messageDocument);
-    User.findByIdAndUpdate(friend._id, { $addToSet: { _messages: messageId } }, { new: true }).exec();
-    User.findByIdAndUpdate(req.user._id, { $addToSet: { _authoredMessages: messageId } }, { new: true }).exec();
-  });
-  //   .catch((err) => {
-  //     res.status(500).json({
-  //       message: err.message,
-  //     });
-  // });
+  })
+    .then((messageDocument) => {
+      const messageId = messageDocument._id;
+      res.json(messageDocument);
+      User.findByIdAndUpdate(friend._id, { $addToSet: { _messages: messageId } }, { new: true }).exec();
+      User.findByIdAndUpdate(req.user._id, { $addToSet: { _authoredMessages: messageId } }, { new: true }).exec();
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
 });
 
+router.post('/messages/forAll', (req, res) => {
+  const { selfie, content, image, video, friends } = req.body;
+  Message.create({
+    selfie,
+    content,
+    image,
+    video,
+    _author: req.user._id,
+  })
+    .then((messageDocument) => {
+      const messageId = messageDocument._id;
+      console.log({ friends });
+      res.json(messageDocument);
+      User.updateMany({ _id: { $in: friends } }, { $addToSet: { _messages: messageId } }, { new: true }).exec();
+      User.findByIdAndUpdate(req.user._id, { $addToSet: { _authoredMessages: messageId } }, { new: true }).exec();
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
 module.exports = router;

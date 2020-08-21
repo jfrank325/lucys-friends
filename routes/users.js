@@ -93,8 +93,8 @@ router.post(`/request`, (req, res) => {
   User.findByIdAndUpdate({ _id: baby }, { $addToSet: { _requests: requester } }, { new: true })
     .exec()
     .then((res) => {
-      res.json({ message: 'new friend request' });
-      console.log('request response', res.json);
+      // res.json({ message: 'new friend request' });
+      console.log('new friend request');
     })
     .catch((err) => {
       res.status(500).json({
@@ -108,11 +108,12 @@ router.post('/accepted/:id', (req, res) => {
   babyId = req.body.baby;
   User.findByIdAndUpdate({ _id: friendId }, { $addToSet: { friends: babyId } }, { new: true }).exec();
   User.findByIdAndUpdate({ _id: babyId }, { $addToSet: { friends: friendId } }, { new: true }).exec();
-  User.findByIdAndUpdate({ _id: babyId }, { $pull: { requests: friendId } }, { new: true })
+  User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: friendId } }, { new: true })
     .exec()
-    .then((res) => {
-      console.log(res.json);
-      res.json({ message: 'new friend added' });
+    .then((accepted) => {
+      res.json(accepted);
+      // console.log(res.json);
+      // res.json({ message: 'new friend added' });
       console.log('This is your friend', babyId);
     })
     .catch((err) => {
@@ -125,9 +126,11 @@ router.post('/accepted/:id', (req, res) => {
 router.post('/denied/:id', (req, res) => {
   const requesterId = req.params.id;
   const babyId = req.body.requester;
-  User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: requesterId } }, { new: true })
-    .then((res) => {
-      res.json({ message: 'request denied' });
+  User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: { _id: requesterId } } }, { new: true })
+    .exec()
+    .then((deny) => {
+      // res.json({ message: 'request denied' });
+      res.json(deny);
     })
     .catch((err) => {
       res.status(500).json({

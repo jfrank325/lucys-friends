@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const Requests = ({ requesters, user }) => {
-  const [showRequests, setShowRequests] = useState();
+  const [showRequests, setShowRequests] = useState(false);
   console.log(requesters, 'requesters');
 
   useEffect(() => {}, [requesters]);
@@ -15,26 +15,17 @@ const Requests = ({ requesters, user }) => {
     console.log(res.data);
   };
 
-  const denyRequest = (id) => {
-    axios.post(`/api/auth/denied/${id}`, {
+  const denyRequest = async (id) => {
+    const res = await axios.post(`/api/auth/denied/${id}`, {
       baby: user._id,
     });
   };
 
-  const toggleRequests = () => {
-    if (showRequests) {
-      setShowRequests(false);
-    }
-    if (!showRequests) {
-      setShowRequests(true);
-    }
-  };
-
   return (
     <>
-      {requesters.length > 0 ? (
+      {requesters.length > 0 && (
         <div>
-          <h4 onClick={toggleRequests}>Friend Requests</h4>
+          <h4 onClick={() => setShowRequests(!showRequests)}>You Have Friend Requests</h4>
           {requesters.map((requester) => (
             <>
               {showRequests && (
@@ -47,8 +38,6 @@ const Requests = ({ requesters, user }) => {
             </>
           ))}
         </div>
-      ) : (
-        <h4>No Pending Requests</h4>
       )}
     </>
   );

@@ -6,6 +6,7 @@ import Friends from './Friends';
 import Profile from '../images/profile.png';
 import Babies from './Babies';
 import ProfileId from './ProfileId';
+import MessageForm from './MessageForm';
 
 const FriendProfileWrapper = styled.div`
   input {
@@ -13,9 +14,9 @@ const FriendProfileWrapper = styled.div`
     border-top: solid 0.2rem var(--sky);
     border-bottom: solid 0.2rem var(--sky);
     background-color: white;
-    margin: 0.5rem 0.5rem;
-    font-size: 1.5rem;
-    height: 3rem;
+    ${'' /* margin: 0.5rem 0.5rem; */}
+    font-size: 1.2rem;
+    height: 2rem;
     overflow-wrap: normal;
     text-align: center;
     color: var(--sky);
@@ -62,7 +63,7 @@ const FriendProfile = ({ user }) => {
     if (user.type === 'BABY') {
       try {
         const res = await axios.get(`/api/auth/requesters/${user._id}`);
-        setRequesters(res.data._requests);
+        setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
         setFriends(res.data.friends);
         console.log('response', res.data);
       } catch {
@@ -74,7 +75,7 @@ const FriendProfile = ({ user }) => {
       console.log(res.data.friends);
     }
   };
-
+  console.log({ requesters });
   useEffect(() => {
     getRequests();
   }, [requesters.length]);
@@ -106,13 +107,13 @@ const FriendProfile = ({ user }) => {
 
   return (
     <FriendProfileWrapper>
-      {user.type === 'FRIEND' && (
+      {user && user.type === 'FRIEND' && (
         <div>
           {/* <h3>Search for Babies You Know</h3> */}
           <input type="text" placeholder="Search For Babies" value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
       )}
-      {user.type === 'BABY' && (
+      {user && user.type === 'BABY' && (
         <div>
           {/* <h3>Search for Friends You Know</h3> */}
           <input
@@ -124,10 +125,12 @@ const FriendProfile = ({ user }) => {
         </div>
       )}
       {query.length > 0 && <Babies babies={babies} />}
+      {user.type === 'BABY' && <Requests requesters={requesters} user={user} />}
       <ProfileId user={user} />
+      <h3>Create a Post for all your friends</h3>
+      <MessageForm refresh={getPeople} friends={user.friends} user={user} />
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
-      {user.type === 'BABY' && <Requests requesters={requesters} user={user} />}
       <Friends refresh={getPeople} messages={messages} friends={friends} user={user} />
     </FriendProfileWrapper>
   );

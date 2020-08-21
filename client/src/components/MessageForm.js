@@ -6,7 +6,7 @@ import Content from './Content';
 import Cam from '../images/Cam.png';
 import UploadPic from '../images/Upload.png';
 
-const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
+const MessageForm = ({ toggleCreateMessage, friend, user, refresh, friends }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [showUploads, setShowUploads] = useState(false);
   const webcamRef = useRef(null);
@@ -22,12 +22,13 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
     const imageSrc = webcamRef.current.getScreenshot();
     console.log(imageSrc);
     // setImgSrc(imageSrc);
+    setMessage({ ...message, loading: 'loading' });
     try {
       const res = await axios.post('	https://api.cloudinary.com/v1_1/dv1aih6td/image/upload', {
         file: imageSrc,
         upload_preset: 'hyvmowkc',
       });
-      setMessage({ ...message, selfie: res.data.secure_url });
+      setMessage({ ...message, selfie: res.data.secure_url, loading: 'finished' });
       console.log('pic?', res.data.secure_url);
     } catch {
       console.log('could not get image');
@@ -89,8 +90,27 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
     }
   };
 
+  const handleAllSubmit = (event) => {
+    event.preventDefault();
+    if (message.loading !== 'loading') {
+      axios
+        .post('/api/messages/forAll', {
+          selfie: message.selfie,
+          image: message.image,
+          video: message.video,
+          content: message.content,
+          friends: friends,
+        })
+        .then(() => {
+          console.log({ message }, { friends }, { user });
+          setMessage({ ...message, content: '' });
+          refresh();
+        });
+    }
+  };
+
   return (
-    <form className="create-message" encType="multipart/form-data" onSubmit={handleSubmit}>
+    <form className="create-message" encType="multipart/form-data" onSubmit={friends ? handleAllSubmit : handleSubmit}>
       <div style={{ dispaly: 'flex', justifyContent: 'space-between', alignItems: 'center', lineHeight: '0' }}>
         <img
           onClick={() => setShowWebcam(!showWebcam)}
@@ -109,9 +129,21 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
           <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
         )}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', lineHeight: '0' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          lineHeight: '0',
+          borderTop: '0.2rem solid var(--lightBlue)',
+        }}
+      >
         <Content content={message.content} handleChange={handleChange} />
-        <button className="button" style={{ margin: '2rem auto 0 auto' }} onClick={refresh}>
+        <button
+          className="button"
+          style={{ padding: '.5rem', borderRadius: '0', height: '2rem', fontSize: '.9rem' }}
+          onClick={refresh}
+        >
           SEND
         </button>
       </div>

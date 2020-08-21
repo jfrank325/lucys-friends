@@ -10,28 +10,34 @@ const NavbarWrapper = styled.header`
     position: fixed;
     min-height: 4rem;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     background-color: var(--sunrise);
-    h1 {
-      font-weight: 500;
-      color: var(--sky);
-      font-size: 3rem;
-      margin-left: 9rem;
+    line-height: 0;
+    .title {
+      margin-top: 2rem;
+      h1 {
+        font-weight: 500;
+        color: var(--sky);
+        font-size: 3rem;
+        line-height: 0;
+      }
     }
     .link-container {
       display: flex;
+      position: absolute;
       align-items: center;
+      right: 50px;
+      top: 10px;
       .auth-links a {
-        padding: 0 1rem;
+        margin: 0 0rem 0 1rem;
         color: var(--sky);
         font-weight: 800;
         font-size: 1.3rem;
+        line-height: 0;
       }
       .auth-links img {
-        width: 2rem;
-        padding: 0 1rem;
+        ${'' /* width: 2rem;
+        height: auto;
+        margin: 0 1rem 0 1rem; */}
       }
     }
   }
@@ -47,16 +53,17 @@ const Navbar = ({ user, setUser }) => {
   return (
     <NavbarWrapper>
       <nav className="navbar">
-        <Link to="/">{/* <img src={BackArrow} alt="Logo" /> */}</Link>
-        <Link to="/">
+        <div className="title">
           <title>Lucy's Friends</title>
-          {!user || user.type === 'FRIEND' ? <h1>Lucy's Friends</h1> : <h1>{user.username}'s Friends</h1>}
-        </Link>
+          <Link to="/">
+            {!user || user.type === 'FRIEND' ? <h1>Lucy's Friends</h1> : <h1>{user.username}'s Friends</h1>}
+          </Link>
+        </div>
         {user && (
           <div className="link-container">
             <div className="auth-links">
               <Link to="/friend/profile">
-                <img src={Profile} alt="Profile" />
+                <img style={{ width: '2rem' }} src={Profile} alt="Profile" />
               </Link>
 
               <Link onClick={logout} to="/">
