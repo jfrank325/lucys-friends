@@ -18,7 +18,7 @@ const App = (props) => {
   return (
     <div className="App">
       <Navbar setUser={setThisUser} user={user} />
-      <div style={{ paddingTop: '7rem' }} className="main-container">
+      <div style={{ paddingTop: '7rem', margin: '0 10rem' }} className="main-container">
         <Route
           path="/signup"
           render={(props) => <Signup history={props.history} {...props} setUser={setThisUser} />}

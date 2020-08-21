@@ -3,8 +3,9 @@ const Message = require('../models/Messages');
 const User = require('../models/User');
 
 router.post('/messages', (req, res) => {
-  const { content, image, video, friend } = req.body;
+  const { selfie, content, image, video, friend } = req.body;
   Message.create({
+    selfie,
     content,
     image,
     video,

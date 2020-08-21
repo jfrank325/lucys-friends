@@ -5,6 +5,7 @@ import Requests from './Requests';
 import Friends from './Friends';
 import Profile from '../images/profile.png';
 import Babies from './Babies';
+import ProfileId from './ProfileId';
 
 const FriendProfileWrapper = styled.div`
   input {
@@ -30,13 +31,9 @@ const FriendProfileWrapper = styled.div`
       color: transparent;
     }
   }
-  h1 {
+  h3 {
     color: var(--sky);
     padding: 1rem 0;
-  }
-  img {
-    height: 20rem;
-    width: auto;
   }
 `;
 
@@ -127,8 +124,9 @@ const FriendProfile = ({ user }) => {
         </div>
       )}
       {query.length > 0 && <Babies babies={babies} />}
-      <h1>{user.username}</h1>
-      <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" />
+      <ProfileId user={user} />
+      {/* <h3>{user.username}</h3>
+      <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
       {user.type === 'BABY' && <Requests requesters={requesters} user={user} />}
       <Friends refresh={getPeople} messages={messages} friends={friends} user={user} />
     </FriendProfileWrapper>

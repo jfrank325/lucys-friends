@@ -1,16 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import Upload from './Upload';
 import WebcamCapture from './WebcamCapture';
+import Content from './Content';
+import Cam from '../images/Cam.png';
+import UploadPic from '../images/Upload.png';
 
 const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
+  const [showWebcam, setShowWebcam] = useState(false);
+  const [showUploads, setShowUploads] = useState(false);
+  const webcamRef = useRef(null);
   const [message, setMessage] = useState({
+    selfie: '',
     content: '',
     image: '',
     video: '',
-
     loading: 'waiting',
   });
+
+  const capture = async () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    console.log(imageSrc);
+    // setImgSrc(imageSrc);
+    try {
+      const res = await axios.post('	https://api.cloudinary.com/v1_1/dv1aih6td/image/upload', {
+        file: imageSrc,
+        upload_preset: 'hyvmowkc',
+      });
+      setMessage({ ...message, selfie: res.data.secure_url });
+      console.log('pic?', res.data.secure_url);
+    } catch {
+      console.log('could not get image');
+    }
+  };
 
   const uploadImage = async (e) => {
     const files = e.target.files;
@@ -52,6 +74,7 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
     if (message.loading !== 'loading') {
       axios
         .post('/api/messages', {
+          selfie: message.selfie,
           image: message.image,
           video: message.video,
           content: message.content,
@@ -68,13 +91,30 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh }) => {
 
   return (
     <form className="create-message" encType="multipart/form-data" onSubmit={handleSubmit}>
-      <label htmlFor="content">Content</label>
-      <input id="content" name="content" value={message.content} onChange={handleChange} />
-      <WebcamCapture />
-      <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
-      <button className="button" style={{ margin: '2rem auto 0 auto' }} onClick={refresh}>
-        Submit Post
-      </button>
+      <div style={{ dispaly: 'flex', justifyContent: 'space-between', alignItems: 'center', lineHeight: '0' }}>
+        <img
+          onClick={() => setShowWebcam(!showWebcam)}
+          style={{ height: '2rem', width: 'auto', padding: '1rem 1rem 0 1rem' }}
+          src={Cam}
+          alt="take a selfie"
+        />
+        {showWebcam && <WebcamCapture capture={capture} selfie={message.selfie} webcamRef={webcamRef} />}
+        <img
+          onClick={() => setShowUploads(!showUploads)}
+          style={{ height: '2rem', width: 'auto' }}
+          src={UploadPic}
+          alt="Upload a selfie or video"
+        />
+        {showUploads && (
+          <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
+        )}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', lineHeight: '0' }}>
+        <Content content={message.content} handleChange={handleChange} />
+        <button className="button" style={{ margin: '2rem auto 0 auto' }} onClick={refresh}>
+          SEND
+        </button>
+      </div>
     </form>
   );
 };

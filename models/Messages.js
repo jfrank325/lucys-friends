@@ -12,6 +12,7 @@ const messageSchema = new Schema(
     },
     image: String,
     video: String,
+    selfie: String,
   },
   {
     timestamps: {

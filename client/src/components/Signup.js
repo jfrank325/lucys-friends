@@ -129,8 +129,8 @@ const Signup = ({ setUser, history }) => {
             </option>
           </select>
         </div>
-
-        <Upload uploadImage={uploadImage} loading={state.loading} />
+        <h5>Upload Profile Pic</h5>
+        <Upload uploadImage={uploadImage} profPic={true} loading={state.loading} />
         <button type="submit">Sign Up</button>
       </form>
     </SignupWrapper>

@@ -43,6 +43,7 @@ body {
   letter-spacing: 0.05rem;
   scroll-behavior: smooth;
   text-align: center;
+ 
   
 }
 

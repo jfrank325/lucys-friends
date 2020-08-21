@@ -7,44 +7,41 @@ import Profile from '../images/profile.png';
 
 const FriendWrapper = styled.div`
   padding: 2rem 1.5rem 0 1.5rem;
+  img {
+    height: 20rem;
+    width: auto;
+  }
 `;
 
 const Friend = ({ friend, refresh, user, messages }) => {
   const [createMessage, setCreateMessage] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  const toggleMessage = () => {
-    setShowMessage(!showMessage);
-  };
-
-  const toggleCreateMessage = () => {
-    setCreateMessage(!createMessage);
-  };
   console.log({ messages });
 
   return (
     <FriendWrapper className="friend-card">
-      <div onClick={toggleMessage}>
-        {!showMessage && <img src={friend.profilePic ? friend.profilePic : Profile} alt={friend.username} />}
+      <div onClick={() => setShowMessage(!showMessage)}>
         <h3>{friend.username}</h3>
+        {!showMessage && <img src={friend.profilePic ? friend.profilePic : Profile} alt={friend.username} />}
         {messages
           .filter((message) => message._author === friend._id)
           .slice(-1)
           .map((message) => (
-            <Message message={message} toggleMessage={toggleMessage} showMessage={showMessage} />
+            <Message message={message} toggleMessage={() => setShowMessage(!showMessage)} showMessage={showMessage} />
           ))}
       </div>
 
-      <button onClick={toggleCreateMessage}>Send {friend.username} a new message</button>
-      {createMessage && (
-        <MessageForm
-          toggleCreateMessage={toggleCreateMessage}
-          createMessage={createMessage}
-          friend={friend}
-          user={user}
-          refresh={refresh}
-        />
-      )}
+      {/* <button onClick={() => setCreateMessage(!createMessage)}>Send {friend.username} a new message</button>
+      {createMessage && ( */}
+      <MessageForm
+        toggleCreateMessage={() => setCreateMessage(!createMessage)}
+        createMessage={() => setShowMessage(!showMessage)}
+        friend={friend}
+        user={user}
+        refresh={refresh}
+      />
+      {/* )} */}
     </FriendWrapper>
   );
 };

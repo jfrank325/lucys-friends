@@ -41,7 +41,7 @@ const UploadWrapper = styled.div`
   }
 `;
 
-const Upload = ({ uploadImage, uploadVideo, loading }) => {
+const Upload = ({ uploadImage, uploadVideo, loading, profPic }) => {
   return (
     <UploadWrapper>
       <div className="upload">
@@ -50,16 +50,18 @@ const Upload = ({ uploadImage, uploadVideo, loading }) => {
             <input type="file" id="imgPath" name="imgPath" onChange={uploadImage} />
             Upload Image
           </label>
-          <label htmlFor="videoPath">
-            <input
-              style={{ marginBottom: '1.9rem' }}
-              type="file"
-              name="videoPath"
-              id="videoPath"
-              onChange={uploadVideo}
-            />{' '}
-            Upload Video
-          </label>
+          {!profPic && (
+            <label htmlFor="videoPath">
+              <input
+                style={{ marginBottom: '1.9rem' }}
+                type="file"
+                name="videoPath"
+                id="videoPath"
+                onChange={uploadVideo}
+              />{' '}
+              Upload Video
+            </label>
+          )}
         </div>
         {loading === 'loading' ? <div className="donut"></div> : loading === 'finished' ? <h4>Uploaded!</h4> : <> </>}
       </div>
