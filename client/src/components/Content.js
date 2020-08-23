@@ -6,7 +6,6 @@ const Content = ({ content, handleChange }) => {
       <label htmlFor="content"></label>
       <input
         style={{ border: 'none' }}
-        id="content"
         name="content"
         placeholder="Write Something"
         value={content}

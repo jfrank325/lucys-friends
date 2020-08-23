@@ -89,12 +89,12 @@ router.get('/requesters/:id', (req, res) => {
 router.post(`/request`, (req, res) => {
   const requester = req.user._id;
   const baby = req.body.baby;
-  console.log(requester, baby);
   User.findByIdAndUpdate({ _id: baby }, { $addToSet: { _requests: requester } }, { new: true })
     .exec()
-    .then((res) => {
+    .then((request) => {
       // res.json({ message: 'new friend request' });
-      console.log('new friend request');
+      res.json(request);
+      console.log(`Request sent to ${request.username}`);
     })
     .catch((err) => {
       res.status(500).json({
@@ -104,17 +104,14 @@ router.post(`/request`, (req, res) => {
 });
 
 router.post('/accepted/:id', (req, res) => {
-  friendId = req.params.id;
-  babyId = req.body.baby;
+  const friendId = req.params.id;
+  const babyId = req.body.baby;
   User.findByIdAndUpdate({ _id: friendId }, { $addToSet: { friends: babyId } }, { new: true }).exec();
   User.findByIdAndUpdate({ _id: babyId }, { $addToSet: { friends: friendId } }, { new: true }).exec();
   User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: friendId } }, { new: true })
     .exec()
     .then((accepted) => {
       res.json(accepted);
-      // console.log(res.json);
-      // res.json({ message: 'new friend added' });
-      console.log('This is your friend', babyId);
     })
     .catch((err) => {
       res.status(500).json({
@@ -124,13 +121,13 @@ router.post('/accepted/:id', (req, res) => {
 });
 
 router.post('/denied/:id', (req, res) => {
-  const requesterId = req.params.id;
-  const babyId = req.body.requester;
-  User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: { _id: requesterId } } }, { new: true })
+  requesterId = req.params.id;
+  babyId = req.body.baby;
+  User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: requesterId } }, { new: true })
     .exec()
-    .then((deny) => {
+    .then((denied) => {
       // res.json({ message: 'request denied' });
-      res.json(deny);
+      res.json(denied);
     })
     .catch((err) => {
       res.status(500).json({

@@ -22,8 +22,6 @@ const Friend = ({ friend, refresh, user, messages }) => {
   const [createMessage, setCreateMessage] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  console.log({ messages });
-
   return (
     <FriendWrapper className="friend-card">
       <div onClick={() => setShowMessage(!showMessage)}>
@@ -33,7 +31,12 @@ const Friend = ({ friend, refresh, user, messages }) => {
           .filter((message) => message._author === friend._id)
           .slice(-1)
           .map((message) => (
-            <Message message={message} toggleMessage={() => setShowMessage(!showMessage)} showMessage={showMessage} />
+            <Message
+              key={message._id}
+              message={message}
+              toggleMessage={() => setShowMessage(!showMessage)}
+              showMessage={showMessage}
+            />
           ))}
       </div>
 

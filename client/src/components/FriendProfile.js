@@ -49,7 +49,6 @@ const FriendProfile = ({ user }) => {
     try {
       const res = await axios.get('/api/auth/babies');
       setBabies(res.data);
-      console.log(res.data, 'people');
     } catch {
       console.log('Could not get babies');
     }
@@ -65,17 +64,15 @@ const FriendProfile = ({ user }) => {
         const res = await axios.get(`/api/auth/requesters/${user._id}`);
         setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
         setFriends(res.data.friends);
-        console.log('response', res.data);
       } catch {
         console.log('Could not get requests');
       }
     } else {
       const res = await axios.get(`/api/auth/requesters/${user._id}`);
       setFriends(res.data.friends);
-      console.log(res.data.friends);
     }
   };
-  console.log({ requesters });
+
   useEffect(() => {
     getRequests();
   }, [requesters.length]);
@@ -84,7 +81,6 @@ const FriendProfile = ({ user }) => {
     try {
       const res = await axios.get(`/api/auth/messages`);
       setMessages(res.data._messages);
-      console.log('messages', res.data._messages);
     } catch {
       console.log('Could not get messages');
     }
@@ -95,15 +91,12 @@ const FriendProfile = ({ user }) => {
 
   useEffect(() => {
     let filteredbabies = [...babies].filter((baby) => baby.username.toLowerCase().includes(query.toLowerCase()));
-    console.log({ filteredbabies });
     if (query.length > 0) {
       setBabies(filteredbabies);
     } else {
       getPeople();
     }
   }, [query]);
-
-  console.log({ query });
 
   return (
     <FriendProfileWrapper>
@@ -124,11 +117,15 @@ const FriendProfile = ({ user }) => {
           />
         </div>
       )}
-      {query.length > 0 && <Babies babies={babies} />}
-      {user.type === 'BABY' && <Requests requesters={requesters} user={user} />}
+      {query && query.length > 0 && <Babies babies={babies} user={user} />}
+      {user && user.type === 'BABY' && <Requests requesters={requesters} user={user} refresh={getRequests} />}
       <ProfileId user={user} />
-      <h3>Create a Post for all your friends</h3>
-      <MessageForm refresh={getPeople} friends={user.friends} user={user} />
+      {user.type === 'BABY' && (
+        <>
+          <h3>Create a Post for all your friends</h3>
+          <MessageForm refresh={getPeople} friends={user && user.friends} user={user} />
+        </>
+      )}
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
       <Friends refresh={getPeople} messages={messages} friends={friends} user={user} />

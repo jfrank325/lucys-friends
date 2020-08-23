@@ -8,11 +8,11 @@ const BabiesWrapper = styled.div`
   justify-content: center;
 `;
 
-const Babies = ({ babies }) => {
+const Babies = ({ babies, user }) => {
   return (
     <BabiesWrapper>
       {babies.slice(0, 8).map((baby) => (
-        <SendRequest key={baby._id} baby={baby} />
+        <SendRequest key={baby._id} baby={baby} user={user} />
       ))}
     </BabiesWrapper>
   );

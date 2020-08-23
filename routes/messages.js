@@ -36,7 +36,6 @@ router.post('/messages/forAll', (req, res) => {
   })
     .then((messageDocument) => {
       const messageId = messageDocument._id;
-      console.log({ friends });
       res.json(messageDocument);
       User.updateMany({ _id: { $in: friends } }, { $addToSet: { _messages: messageId } }, { new: true }).exec();
       User.findByIdAndUpdate(req.user._id, { $addToSet: { _authoredMessages: messageId } }, { new: true }).exec();

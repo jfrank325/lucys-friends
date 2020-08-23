@@ -6,7 +6,7 @@ import Content from './Content';
 import Cam from '../images/Cam.png';
 import UploadPic from '../images/Upload.png';
 
-const MessageForm = ({ toggleCreateMessage, friend, user, refresh, friends }) => {
+const MessageForm = ({ friend, user, refresh, friends }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [showUploads, setShowUploads] = useState(false);
   const webcamRef = useRef(null);
@@ -20,8 +20,7 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh, friends }) =>
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log(imageSrc);
-    // setImgSrc(imageSrc);
+
     setMessage({ ...message, loading: 'loading' });
     try {
       const res = await axios.post('	https://api.cloudinary.com/v1_1/dv1aih6td/image/upload', {
@@ -29,7 +28,6 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh, friends }) =>
         upload_preset: 'hyvmowkc',
       });
       setMessage({ ...message, selfie: res.data.secure_url, loading: 'finished' });
-      console.log('pic?', res.data.secure_url);
     } catch {
       console.log('could not get image');
     }
@@ -82,9 +80,7 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh, friends }) =>
           friend: friend,
         })
         .then(() => {
-          console.log({ message }, { friend }, { user });
           setMessage({ ...message, content: '' });
-          toggleCreateMessage();
           refresh();
         });
     }
@@ -102,7 +98,6 @@ const MessageForm = ({ toggleCreateMessage, friend, user, refresh, friends }) =>
           friends: friends,
         })
         .then(() => {
-          console.log({ message }, { friends }, { user });
           setMessage({ ...message, content: '' });
           refresh();
         });

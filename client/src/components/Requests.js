@@ -2,32 +2,46 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 
-const Requests = ({ requesters, user }) => {
+const Requests = ({ requesters, user, refresh }) => {
   const [showRequests, setShowRequests] = useState(false);
-  console.log(requesters, 'requesters');
+  const [response, setResponse] = useState();
 
   useEffect(() => {}, [requesters]);
 
   const acceptRequest = async (id) => {
-    const res = await axios.post(`/api/auth/accepted/${id}`, {
-      baby: user._id,
-    });
-    console.log(res.data);
+    try {
+      const res = await axios.post(`/api/auth/accepted/${id}`, {
+        baby: user._id,
+      });
+      setResponse(`You are now friends`);
+      refresh();
+      console.log(res.data);
+    } catch {
+      console.log('Could not get requests');
+    }
   };
 
   const denyRequest = async (id) => {
-    const res = await axios.post(`/api/auth/denied/${id}`, {
-      baby: user._id,
-    });
+    try {
+      const res = await axios.post(`/api/auth/denied/${id}`, {
+        baby: user._id,
+      });
+      setResponse('Request Denied');
+      refresh();
+      console.log(res.data);
+    } catch {
+      console.log('Trouble denying request');
+    }
   };
 
   return (
     <>
       {requesters.length > 0 && (
         <div>
+          <h4>{response}</h4>
           <h4 onClick={() => setShowRequests(!showRequests)}>You Have Friend Requests</h4>
-          {requesters.map((requester) => (
-            <>
+          {requesters.map((requester, i) => (
+            <div key={i}>
               {showRequests && (
                 <div>
                   <p>{requester.username}</p>
@@ -35,7 +49,7 @@ const Requests = ({ requesters, user }) => {
                   <button onClick={() => denyRequest(requester._id)}>Deny</button>
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       )}
