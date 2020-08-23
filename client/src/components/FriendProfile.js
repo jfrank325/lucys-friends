@@ -97,7 +97,7 @@ const FriendProfile = ({ user }) => {
       getPeople();
     }
   }, [query]);
-
+  console.log({ user });
   return (
     <FriendProfileWrapper>
       {user && user.type === 'FRIEND' && (
@@ -118,7 +118,7 @@ const FriendProfile = ({ user }) => {
         </div>
       )}
       {query && query.length > 0 && <Babies babies={babies} user={user} />}
-      {user && user.type === 'BABY' && <Requests requesters={requesters} user={user} refresh={getRequests} />}
+      {user && <Requests requesters={requesters} user={user} refresh={getRequests} />}
       <ProfileId user={user} />
       {user.type === 'BABY' && (
         <>

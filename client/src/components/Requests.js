@@ -13,8 +13,8 @@ const Requests = ({ requesters, user, refresh }) => {
       const res = await axios.post(`/api/auth/accepted/${id}`, {
         baby: user._id,
       });
-      setResponse(`You are now friends`);
       refresh();
+      setResponse(`You are now friends`);
       console.log(res.data);
     } catch {
       console.log('Could not get requests');
@@ -36,9 +36,9 @@ const Requests = ({ requesters, user, refresh }) => {
 
   return (
     <>
+      <h4>{response}</h4>
       {requesters.length > 0 && (
         <div>
-          <h4>{response}</h4>
           <h4 onClick={() => setShowRequests(!showRequests)}>You Have Friend Requests</h4>
           {requesters.map((requester, i) => (
             <div key={i}>

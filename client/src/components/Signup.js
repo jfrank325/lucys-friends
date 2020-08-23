@@ -87,13 +87,8 @@ const Signup = ({ setUser, history }) => {
           profilePic: state.profilePic,
           type: state.type,
         });
-        if (state.type === 'BABY') {
-          history.push('/profile');
-        } else {
-          history.push('/friend/profile');
-        }
-        // update state for user in <App/>
         setUser(res.data);
+        history.push('/friend/profile');
       } catch (error) {
         setError(error?.response?.data?.message);
       }
