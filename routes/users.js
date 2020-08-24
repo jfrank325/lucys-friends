@@ -136,6 +136,22 @@ router.post('/denied/:id', (req, res) => {
     });
 });
 
+router.post('/seen', (req, res) => {
+  id = req.user._id;
+  seenMessage = req.body.seenMessage;
+  console.log('ids', id, seenMessage);
+  User.findByIdAndUpdate(id, { $addToSet: { _seenMessages: seenMessage } })
+    .exec()
+    .then((seen) => {
+      res.json(seen);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {

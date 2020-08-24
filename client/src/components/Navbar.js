@@ -35,9 +35,9 @@ const NavbarWrapper = styled.header`
         line-height: 0;
       }
       .auth-links img {
-        ${'' /* width: 2rem;
-        height: auto;
-        margin: 0 1rem 0 1rem; */}
+        width: 2.1rem;
+        height: 2.1rem;
+        border-radius: 25px;
       }
     }
   }
@@ -63,7 +63,7 @@ const Navbar = ({ user, setUser }) => {
           <div className="link-container">
             <div className="auth-links">
               <Link to="/friend/profile">
-                <img style={{ width: '2rem' }} src={Profile} alt="Profile" />
+                <img style={{ width: '2rem' }} src={user.profilePic ? user.profilePic : Profile} alt="Profile" />
               </Link>
 
               <Link onClick={logout} to="/">

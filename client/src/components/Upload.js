@@ -12,6 +12,8 @@ const UploadWrapper = styled.div`
       border: none;
       border-radius: 25px;
       padding: 0.3rem 0.5rem;
+      color: white;
+      margin: 0 0.5rem;
     }
     input[type='file'] {
       display: none;
@@ -34,6 +36,7 @@ const UploadWrapper = styled.div`
     }
     h4 {
       margin-top: 2rem;
+      color: white;
     }
     .uploads {
       display: flex;
@@ -63,7 +66,13 @@ const Upload = ({ uploadImage, uploadVideo, loading, profPic }) => {
             </label>
           )}
         </div>
-        {loading === 'loading' ? <div className="donut"></div> : loading === 'finished' ? <h4>Uploaded!</h4> : <> </>}
+        {loading === 'loading' ? (
+          <div className="donut"></div>
+        ) : loading === 'finished' ? (
+          <h4>Uploaded! Send the photo &uarr;</h4>
+        ) : (
+          <> </>
+        )}
       </div>
     </UploadWrapper>
   );

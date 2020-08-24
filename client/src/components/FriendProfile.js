@@ -112,7 +112,7 @@ const FriendProfile = ({ user }) => {
           {/* <h3>Search for Friends You Know</h3> */}
           <input
             type="text"
-            placeholder="Search For Friends"
+            placeholder="Search For New Friends"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -120,7 +120,7 @@ const FriendProfile = ({ user }) => {
       )}
       {query && query.length > 0 && <Babies babies={babies} user={user} />}
       <Requests requesters={requesters} user={user} refresh={getRequests} />
-      <ProfileId user={user} />
+      {/* <ProfileId user={user} /> */}
       {user.type === 'BABY' && (
         <>
           <h3>Create a Post for all your friends</h3>

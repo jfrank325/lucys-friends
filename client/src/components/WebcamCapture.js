@@ -1,5 +1,5 @@
 import Webcam from 'react-webcam';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Axios from 'axios';
 import styled from 'styled-components';
 
@@ -9,14 +9,29 @@ const WebcamWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   img {
-    height: 20rem;
+    height: 15rem;
     width: auto;
+  }
+  button {
+    border: 0.1rem solid white;
+    border-radius: 5px;
+    font-size: 1.2rem;
   }
 `;
 
 const WebcamCapture = ({ capture, selfie, setSelfie, webcamRef }) => {
   // const [pic, setPic] = useState('');
   // const webcamRef = useRef(null);
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
+
+  const updateMedia = () => {
+    setDesktop(window.innerWidth > 1200);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  });
 
   const videoConstraints = {
     width: 1280,
@@ -46,8 +61,8 @@ const WebcamCapture = ({ capture, selfie, setSelfie, webcamRef }) => {
         audio={false}
         ref={webcamRef}
         screenshotFormat="image/jpeg"
-        height={420}
-        width={540}
+        height={240}
+        width={320}
         videoConstraints={videoConstraints}
       />
       <button onClick={capture}>Take Photo</button>
