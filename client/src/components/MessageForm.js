@@ -5,6 +5,33 @@ import WebcamCapture from './WebcamCapture';
 import Content from './Content';
 import Cam from '../images/Cam.png';
 import UploadPic from '../images/Upload.png';
+import styled from 'styled-components';
+
+const MessageFormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--sky);
+  border-radius: 10px;
+  margin: 0 auto;
+  max-width: 20rem;
+  border: 0.5rem solid var(--sky);
+  .content-send {
+    display: flex;
+  }
+  .photo-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    border: 0.1rem solid white;
+    color: white;
+    border-radius: 5px;
+    padding: 0.1rem 0.5rem 0 0.5rem;
+    margin: 0.5rem 0.2rem 0 0.2rem;
+  }
+`;
 
 const MessageForm = ({ friend, user, refresh, friends }) => {
   const [showWebcam, setShowWebcam] = useState(false);
@@ -105,21 +132,35 @@ const MessageForm = ({ friend, user, refresh, friends }) => {
   };
 
   return (
-    <form className="create-message" encType="multipart/form-data" onSubmit={friends ? handleAllSubmit : handleSubmit}>
-      <div style={{ dispaly: 'flex', justifyContent: 'space-between', alignItems: 'center', lineHeight: '0' }}>
-        <img
-          onClick={() => setShowWebcam(!showWebcam)}
-          style={{ height: '2rem', width: 'auto', padding: '1rem 1rem 0 1rem' }}
-          src={Cam}
-          alt="take a selfie"
-        />
+    <MessageFormWrapper
+      className="create-message"
+      encType="multipart/form-data"
+      onSubmit={friends ? handleAllSubmit : handleSubmit}
+    >
+      <div className="content-send">
+        <Content content={message.content} handleChange={handleChange} />
+        <button
+          className="button"
+          style={{ padding: '.5rem', borderRadius: '0', height: '2rem', fontSize: '.9rem' }}
+          onClick={refresh}
+        >
+          SEND
+        </button>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '20rem' }}>
+        <div class="photo-option" onClick={() => setShowWebcam(!showWebcam)}>
+          <p>Take Photo</p>
+          <img style={{ height: '1.8rem', width: 'auto', marginLeft: '.5rem' }} src={Cam} alt="take a selfie" />
+        </div>
         {showWebcam && <WebcamCapture capture={capture} selfie={message.selfie} webcamRef={webcamRef} />}
-        <img
-          onClick={() => setShowUploads(!showUploads)}
-          style={{ height: '2rem', width: 'auto' }}
-          src={UploadPic}
-          alt="Upload a selfie or video"
-        />
+        <div class="photo-option" onClick={() => setShowUploads(!showUploads)}>
+          <p>Photo/Video</p>
+          <img
+            style={{ height: '1.8rem', width: 'auto', marginLeft: '.5rem' }}
+            src={UploadPic}
+            alt="Upload a selfie or video"
+          />
+        </div>
         {showUploads && (
           <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
         )}
@@ -132,17 +173,8 @@ const MessageForm = ({ friend, user, refresh, friends }) => {
           lineHeight: '0',
           borderTop: '0.2rem solid var(--lightBlue)',
         }}
-      >
-        <Content content={message.content} handleChange={handleChange} />
-        <button
-          className="button"
-          style={{ padding: '.5rem', borderRadius: '0', height: '2rem', fontSize: '.9rem' }}
-          onClick={refresh}
-        >
-          SEND
-        </button>
-      </div>
-    </form>
+      ></div>
+    </MessageFormWrapper>
   );
 };
 

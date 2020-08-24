@@ -12,8 +12,8 @@ const ProfileId = ({ user }) => {
       }}
     >
       {' '}
-      <h3>{user && user.username}</h3>
-      <img src={user && user.profilePic ? user.profilePic : Profile} alt="Profile" />
+      <h3>{user.username}'s Profile</h3>
+      <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" />
     </div>
   );
 };

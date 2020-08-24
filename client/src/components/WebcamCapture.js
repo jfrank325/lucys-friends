@@ -46,11 +46,11 @@ const WebcamCapture = ({ capture, selfie, setSelfie, webcamRef }) => {
         audio={false}
         ref={webcamRef}
         screenshotFormat="image/jpeg"
-        height={720}
-        width={1280}
+        height={420}
+        width={540}
         videoConstraints={videoConstraints}
       />
-      <button onClick={capture}>Capture photo</button>
+      <button onClick={capture}>Take Photo</button>
       {selfie && <img src={selfie} alt="webcam" />}
     </WebcamWrapper>
   );

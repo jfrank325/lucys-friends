@@ -21,6 +21,7 @@ const FriendProfileWrapper = styled.div`
     text-align: center;
     color: var(--sky);
     font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+
     &::placeholder {
       color: var(--sunrise);
     }
@@ -118,12 +119,12 @@ const FriendProfile = ({ user }) => {
         </div>
       )}
       {query && query.length > 0 && <Babies babies={babies} user={user} />}
-      {user && <Requests requesters={requesters} user={user} refresh={getRequests} />}
+      <Requests requesters={requesters} user={user} refresh={getRequests} />
       <ProfileId user={user} />
       {user.type === 'BABY' && (
         <>
           <h3>Create a Post for all your friends</h3>
-          <MessageForm refresh={getPeople} friends={user && user.friends} user={user} />
+          <MessageForm refresh={getPeople} friends={user.friends} user={user} />
         </>
       )}
       {/* <h3>{user.username}</h3>

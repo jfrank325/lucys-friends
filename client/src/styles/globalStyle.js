@@ -40,7 +40,7 @@ body {
   ${'' /* font-family: Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */}
   font-family: 'Balsamiq Sans', 'Open Sans', Arial;
   font-weight: 600;
-  line-height: 1.6rem;
+  ${'' /* line-height: 1.6rem; */}
   letter-spacing: 0.05rem;
   scroll-behavior: smooth;
   text-align: center;

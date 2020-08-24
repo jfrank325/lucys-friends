@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import { useState } from 'react';
 import styled from 'styled-components';
+import Profile from '../images/profile.png';
 
 const SendRequestWrapper = styled.div`
   margin: 0 0.5rem;
@@ -41,10 +42,15 @@ const SendRequest = ({ baby, user }) => {
         <h4>{baby.username}</h4>
       </div>
       {showPic && (
-        <>
-          <img src={baby.profilePic} style={{ height: '3rem', width: 'auto' }} alt={baby.username} />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {baby.profilePic && (
+            <img src={baby.profilePic} style={{ height: '5rem', width: 'auto', margin: '.5rem' }} alt={baby.username} />
+          )}
+          {!baby.profilePic && (
+            <img src={Profile} style={{ height: '5rem', width: 'auto', margin: '.5rem' }} alt={baby.username} />
+          )}
           <button onClick={sendRequest}>Send Request</button>
-        </>
+        </div>
       )}
     </SendRequestWrapper>
   );

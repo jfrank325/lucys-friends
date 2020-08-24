@@ -26,8 +26,8 @@ const Requests = ({ requesters, user, refresh }) => {
       const res = await axios.post(`/api/auth/denied/${id}`, {
         baby: user._id,
       });
-      setResponse('Request Denied');
       refresh();
+      setResponse('Request Denied');
       console.log(res.data);
     } catch {
       console.log('Trouble denying request');
