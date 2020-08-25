@@ -3,9 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Requests from './Requests';
 import Friends from './Friends';
-import Profile from '../images/profile.png';
 import Babies from './Babies';
-import ProfileId from './ProfileId';
 import MessageForm from './MessageForm';
 import { UserContext } from '../contexts/userContext';
 
@@ -22,9 +20,8 @@ const FriendProfileWrapper = styled.div`
     text-align: center;
     color: var(--sky);
     font-family: 'Balsamiq Sans', 'Open Sans', Arial;
-
     &::placeholder {
-      color: var(--sunrise);
+      color: var(--yellow);
     }
     &:focus {
       ${'' /* outline: none; */}
@@ -46,7 +43,7 @@ const FriendProfile = () => {
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
   const [messages, setMessages] = useState([]);
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const getPeople = async () => {
     try {
@@ -103,23 +100,14 @@ const FriendProfile = () => {
   console.log({ user });
   return (
     <FriendProfileWrapper>
-      {user.type === 'FRIEND' && (
-        <div>
-          {/* <h3>Search for Babies You Know</h3> */}
-          <input type="text" placeholder="Search For Babies" value={query} onChange={(e) => setQuery(e.target.value)} />
-        </div>
-      )}
-      {user.type === 'BABY' && (
-        <div>
-          {/* <h3>Search for Friends You Know</h3> */}
-          <input
-            type="text"
-            placeholder="Search For New Friends"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-      )}
+      <div>
+        <input
+          type="text"
+          placeholder={user.type === 'FRIEND' ? 'Search For Babies' : 'Search For New Friends'}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
       {query && query.length > 0 && <Babies babies={babies} />}
       <Requests requesters={requesters} refresh={getRequests} />
       {/* <ProfileId user={user} /> */}
@@ -131,6 +119,7 @@ const FriendProfile = () => {
       )}
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
+      <h2>{user.type === 'BABY' ? 'Your Friends' : 'Your Babies'}</h2>
       <Friends refresh={getPeople} messages={messages} friends={friends} />
     </FriendProfileWrapper>
   );

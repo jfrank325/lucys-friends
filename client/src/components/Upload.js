@@ -8,7 +8,7 @@ const UploadWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     label {
-      background-color: var(--sunrise);
+      background-color: var(--yellow);
       border: none;
       border-radius: 25px;
       padding: 0.3rem 0.5rem;
@@ -51,7 +51,7 @@ const Upload = ({ uploadImage, uploadVideo, loading, profPic }) => {
         <div className="uploads">
           <label htmlFor="imgPath">
             <input type="file" id="imgPath" name="imgPath" onChange={uploadImage} />
-            Upload Image
+            {profPic ? 'Upload Profile Pic' : 'Upload Image'}
           </label>
           {!profPic && (
             <label htmlFor="videoPath">
@@ -66,13 +66,7 @@ const Upload = ({ uploadImage, uploadVideo, loading, profPic }) => {
             </label>
           )}
         </div>
-        {loading === 'loading' ? (
-          <div className="donut"></div>
-        ) : loading === 'finished' ? (
-          <h4>Uploaded! Send the photo &uarr;</h4>
-        ) : (
-          <> </>
-        )}
+        {loading === 'loading' ? <div className="donut"></div> : loading === 'finished' ? <h4>Uploaded!</h4> : <> </>}
       </div>
     </UploadWrapper>
   );

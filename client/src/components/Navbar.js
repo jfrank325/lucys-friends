@@ -1,44 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// import BackArrow from '../images/arrowLW.png';
+import LF from '../images/LucyMiniLogo.png';
 import Profile from '../images/profile.png';
 import styled from 'styled-components';
 
 const NavbarWrapper = styled.header`
   .navbar {
     position: fixed;
-    min-height: 4rem;
+    max-height: 3rem;
     width: 100%;
-    background-color: var(--sunrise);
-    line-height: 0;
-    .title {
-      margin-top: 2rem;
-      h1 {
-        font-weight: 500;
-        color: var(--sky);
-        font-size: 3rem;
-        line-height: 0;
-      }
+    background-color: var(--yellow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .home {
+      height: 2.5rem;
+      width: auto;
+      margin-left: 1rem;
     }
-    .link-container {
+    h1 {
+      font-weight: 500;
+      color: var(--sky);
+      font-size: 2.8rem;
+    }
+    .auth-links {
       display: flex;
-      position: absolute;
       align-items: center;
-      right: 50px;
-      top: 10px;
-      .auth-links a {
-        margin: 0 0rem 0 1rem;
-        color: var(--sky);
-        font-weight: 800;
-        font-size: 1.3rem;
-        line-height: 0;
-      }
-      .auth-links img {
-        width: 2.1rem;
-        height: 2.1rem;
-        border-radius: 25px;
-      }
+      justify-content: flex-end;
+    }
+    .auth-links a {
+      padding: 1rem;
+      color: var(--sky);
+      font-weight: 800;
+      font-size: 1.3rem;
+      height: auto;
+    }
+    .auth-links img {
+      width: auto;
+      height: 2.1rem;
+      border-radius: 25px;
     }
   }
 `;
@@ -53,12 +54,14 @@ const Navbar = ({ user, setUser }) => {
   return (
     <NavbarWrapper>
       <nav className="navbar">
-        <div className="title">
-          <title>Lucy's Friends</title>
-          <Link to="/">
-            {!user || user.type === 'FRIEND' ? <h1>Lucy's Friends</h1> : <h1>{user.username}'s Friends</h1>}
-          </Link>
-        </div>
+        <title>Lucy's Friends</title>
+        <Link to="/">
+          {/* {!user || user.type === 'FRIEND' ? ( */}
+          <img className="home" src={LF} alt="Home" />
+          {/* ) : (
+            <h1>{user.username}'s Friends</h1>
+          )} */}
+        </Link>
         {user && (
           <div className="link-container">
             <div className="auth-links">

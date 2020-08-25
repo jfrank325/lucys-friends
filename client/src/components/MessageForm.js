@@ -12,30 +12,36 @@ const MessageFormWrapper = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--sky);
+  background-color: var(--yellow);
   border-radius: 10px;
   margin: 0 auto;
-  max-width: 20rem;
-  border: 0.5rem solid var(--sky);
+  max-width: 14rem;
+  border: 0.5rem solid var(--yellow);
   .content-send {
     display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 0.3rem;
   }
   .photo-option {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 2rem;
+    height: 1.5rem;
     border: 0.1rem solid white;
     color: white;
     border-radius: 5px;
-    padding: 0.1rem 0.5rem 0 0.5rem;
-    margin: 0.5rem 0.2rem 0 0.2rem;
+    padding: 0.05rem 0.25rem 0 0.25rem;
+    margin: 0.25rem 0.2rem 0 0.2rem;
+    font-size: 0.7rem;
   }
   .send-button {
     padding: 0.5rem;
-    height: 2rem;
+    height: 1.5rem;
     font-size: 0.9rem;
     font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+    background-color: var(--yellow);
+    border-radius: 0;
   }
 `;
 
@@ -151,21 +157,19 @@ const MessageForm = ({ friend, refresh, friends }) => {
     >
       <div className="content-send">
         <Content content={message.content} sent={messageSent} handleChange={handleChange} />
-        <button
-          className="button"
-          style={{ padding: '.5rem', borderRadius: '0', height: '2rem', fontSize: '.9rem' }}
-          onClick={refresh}
-        >
-          SEND
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <button className="sent-button" onClick={refresh}>
+            SEND
+          </button>
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '20rem' }}>
-        <div class="photo-option" onClick={() => setShowWebcam(!showWebcam)}>
+        <div className="photo-option" onClick={() => setShowWebcam(!showWebcam)}>
           <p>Take Photo</p>
-          <img style={{ height: '1.5rem', width: 'auto', marginLeft: '.5rem' }} src={Cam} alt="take a selfie" />
+          <img style={{ height: '1rem', width: 'auto', marginLeft: '.5rem' }} src={Cam} alt="take a selfie" />
         </div>
 
-        <div class="photo-option" onClick={() => setShowUploads(!showUploads)}>
+        <div className="photo-option" onClick={() => setShowUploads(!showUploads)}>
           <p>Photo/Video</p>
           <img
             style={{ height: '1.5rem', width: 'auto', marginLeft: '.5rem' }}

@@ -4,12 +4,13 @@ const GlobalStyle = createGlobalStyle`
 
 :root {
   /* Primary */
-  --sunrise: #cebb11; /* Primary call to action color */
-  --sky: rgb(65, 156, 184); /* Secondary call to action color */
+  --yellow: #cebb11; /* Primary call to action color */
+  --sky: #419cb8; /* Secondary call to action color */
   --daylight: rgb(245, 245, 245);
   --bright: rgb(255, 255, 255);
   --gray: rgb(194, 194, 194);
   --midnight: rgb(17, 17, 17);
+  --brown: #ba7b5a;
 }
 
 * {
@@ -32,6 +33,7 @@ button {
   border: none;
   padding: 0.5rem 0.5rem;
   font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+  cursor: pointer;
 }
 
 body {

@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MessageForm from './MessageForm';
 import { useState } from 'react';
 import Message from './Message';
 import styled from 'styled-components';
 import Profile from '../images/profile.png';
 import Axios from 'axios';
+import { UserContext } from '../contexts/userContext';
 
 const FriendWrapper = styled.div`
-  padding: 1rem;
-  background-color: var(--sunrise);
+  padding: 0.5rem;
+  background-color: var(--yellow);
   margin: 1rem;
   border-radius: 5px;
   h2 {
@@ -16,8 +17,8 @@ const FriendWrapper = styled.div`
   }
   img {
     width: auto;
-    max-width: 18rem;
-    max-height: 20rem;
+    max-width: 15rem;
+    max-height: auto;
   }
   .new {
     @keyframes border_change {
@@ -38,10 +39,11 @@ const FriendWrapper = styled.div`
   }
 `;
 
-const Friend = ({ friend, refresh, user, messages }) => {
+const Friend = ({ friend, refresh, messages }) => {
   const [createMessage, setCreateMessage] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [newMessage, setNewMessage] = useState();
+  const { user } = useContext(UserContext);
 
   const nowSeen = async (mess) => {
     try {

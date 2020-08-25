@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Axios from 'axios';
 
 const MessageWrapper = styled.div`
   img {
@@ -13,7 +12,7 @@ const MessageWrapper = styled.div`
   }
 `;
 
-const Message = ({ message, showMessage, toggleMessage, nowSeen, seen }) => {
+const Message = ({ message, showMessage, nowSeen, seen }) => {
   const { content, image, video, selfie, _id } = message;
   seen(_id);
   // const nowSeen = async () => {

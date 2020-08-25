@@ -12,7 +12,7 @@ const SendRequestWrapper = styled.div`
 const SendRequest = ({ baby }) => {
   const [showPic, setShowPic] = useState();
   const [response, setResponse] = useState();
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const sendRequest = async () => {
     if (!baby._requests.includes(user._id)) {

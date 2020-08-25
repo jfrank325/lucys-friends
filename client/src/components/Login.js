@@ -15,7 +15,7 @@ const LoginWrapper = styled.div`
       label {
       }
       select {
-        background-color: var(--sunrise);
+        background-color: var(--yellow);
         border: none;
         border-radius: 25px;
         padding: 0.3rem 0.5rem;
@@ -24,7 +24,6 @@ const LoginWrapper = styled.div`
       }
     }
     .auth-input {
-      text-align: left;
       margin: 0.5rem 0;
       label {
       }
@@ -33,12 +32,16 @@ const LoginWrapper = styled.div`
         border-radius: 25px;
         font-size: 1.2rem;
         padding: 0 0.3rem;
+        &::placeholder {
+          color: var(--sky);
+          font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+          text-align: center;
+        }
       }
     }
     button {
       margin-top: 1.5rem;
-      font-size: 1.5rem;
-      padding: 0.5rem 1rem;
+      font-size: 1rem;
     }
   }
 `;
@@ -63,11 +66,6 @@ const Login = ({ setUser, history }) => {
         password: state.password,
       })
       .then((response) => {
-        // if (state.type === 'BABY') {
-        //   history.push('/profile');
-        // } else {
-        // }
-        // update state for user in <App/>
         setUser(response.data);
         history.push('/friend/profile');
       })
@@ -80,13 +78,29 @@ const Login = ({ setUser, history }) => {
     <LoginWrapper>
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="auth-input">
-          <label htmlFor="username">Username: </label>
-          <input type="text" id="username" name="username" value={state.username} onChange={handleChange} />
+          <label htmlFor="username">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              value={state.username}
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <div className="auth-input">
           {' '}
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" value={state.password} onChange={handleChange} />
+          <label htmlFor="password">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              value={state.password}
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <button type="submit">Log In</button>
       </form>

@@ -11,22 +11,24 @@ const SignupWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 1.3rem;
+    font-size: 1rem;
     .auth-select {
       margin: 2rem 0;
       label {
+        color: var(--sky);
       }
       select {
-        background-color: var(--sunrise);
+        background-color: var(--yellow);
         border: none;
         border-radius: 25px;
         padding: 0.3rem 0.5rem;
+        font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+        color: white;
         option {
         }
       }
     }
     .auth-input {
-      text-align: left;
       margin: 0.5rem 0;
       label {
       }
@@ -35,11 +37,16 @@ const SignupWrapper = styled.div`
         border-radius: 25px;
         font-size: 1.2rem;
         padding: 0 0.3rem;
+        &::placeholder {
+          color: var(--sky);
+          font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+          text-align: center;
+        }
       }
     }
     button {
       margin-top: 1.5rem;
-      font-size: 1.5rem;
+      font-size: 1rem;
       padding: 0.5rem 1rem;
     }
   }
@@ -99,18 +106,34 @@ const Signup = ({ setUser, history }) => {
     <SignupWrapper>
       <form className="login-form" onSubmit={handleSubmit}>
         {error && <h3 style={{ color: 'red', paddingBottom: '2rem' }}>{error}</h3>}
-
         <div className="auth-input">
-          <label htmlFor="username">Username: </label>
-          <input type="text" required name="username" value={state.username} onChange={handleChange} />
+          <label htmlFor="username">
+            <input
+              type="text"
+              required
+              name="username"
+              placeholder="Username"
+              value={state.username}
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <div className="auth-input">
-          <label htmlFor="email">Email: </label>
-          <input type="text" required name="email" value={state.email} onChange={handleChange} />
+          <label htmlFor="email">
+            <input type="text" required name="email" placeholder="Email" value={state.email} onChange={handleChange} />
+          </label>
         </div>
         <div className="auth-input">
-          <label htmlFor="password">Password: </label>
-          <input type="password" required name="password" value={state.password} onChange={handleChange} />
+          <label htmlFor="password">
+            <input
+              type="password"
+              required
+              name="password"
+              placeholder="Password"
+              value={state.password}
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <div className="auth-select">
           <label htmlFor="type">Are you signing up as a baby or a friend? </label>
@@ -124,7 +147,6 @@ const Signup = ({ setUser, history }) => {
             </option>
           </select>
         </div>
-        <h5>Upload Profile Pic</h5>
         <Upload uploadImage={uploadImage} profPic={true} loading={state.loading} />
         <button type="submit">Sign Up</button>
       </form>

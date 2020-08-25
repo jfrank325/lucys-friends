@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Friend from './Friend';
 import styled from 'styled-components';
-import { UserContext } from '../contexts/userContext';
 
 const FriendsWrapper = styled.div`
   display: flex;
@@ -11,13 +10,11 @@ const FriendsWrapper = styled.div`
 `;
 
 const Friends = ({ refresh, messages, friends }) => {
-  const { user } = useContext(UserContext);
-  console.log({ user }, 'pooper');
   return (
     <FriendsWrapper>
       {' '}
       {friends.map((friend) => (
-        <Friend refresh={refresh} messages={messages} friend={friend} key={friend._id} user={user} />
+        <Friend refresh={refresh} messages={messages} friend={friend} key={friend._id} />
       ))}
     </FriendsWrapper>
   );

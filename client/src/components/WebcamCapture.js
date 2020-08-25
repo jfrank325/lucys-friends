@@ -1,6 +1,5 @@
 import Webcam from 'react-webcam';
-import React, { useRef, useState, useEffect } from 'react';
-import Axios from 'axios';
+import React from 'react';
 import styled from 'styled-components';
 
 const WebcamWrapper = styled.div`
@@ -22,16 +21,16 @@ const WebcamWrapper = styled.div`
 const WebcamCapture = ({ capture, selfie, setSelfie, webcamRef }) => {
   // const [pic, setPic] = useState('');
   // const webcamRef = useRef(null);
-  const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
+  // const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
 
-  const updateMedia = () => {
-    setDesktop(window.innerWidth > 1200);
-  };
+  // const updateMedia = () => {
+  //   setDesktop(window.innerWidth > 1200);
+  // };
 
-  useEffect(() => {
-    window.addEventListener('resize', updateMedia);
-    return () => window.removeEventListener('resize', updateMedia);
-  });
+  // useEffect(() => {
+  //   window.addEventListener('resize', updateMedia);
+  //   return () => window.removeEventListener('resize', updateMedia);
+  // });
 
   const videoConstraints = {
     width: 1280,
