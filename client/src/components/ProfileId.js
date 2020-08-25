@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Profile from '../images/profile.png';
+import { UserContext } from '../contexts/userContext';
 
-const ProfileId = ({ user }) => {
+const ProfileId = () => {
+  const { user, setUser } = useContext(UserContext);
   return (
     <div
       style={{

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Friend from './Friend';
 import styled from 'styled-components';
+import { UserContext } from '../contexts/userContext';
 
 const FriendsWrapper = styled.div`
   display: flex;
@@ -9,7 +10,9 @@ const FriendsWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Friends = ({ refresh, messages, friends, user }) => {
+const Friends = ({ refresh, messages, friends }) => {
+  const { user } = useContext(UserContext);
+  console.log({ user }, 'pooper');
   return (
     <FriendsWrapper>
       {' '}

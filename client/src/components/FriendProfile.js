@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Requests from './Requests';
@@ -7,6 +7,7 @@ import Profile from '../images/profile.png';
 import Babies from './Babies';
 import ProfileId from './ProfileId';
 import MessageForm from './MessageForm';
+import { UserContext } from '../contexts/userContext';
 
 const FriendProfileWrapper = styled.div`
   input {
@@ -39,12 +40,13 @@ const FriendProfileWrapper = styled.div`
   }
 `;
 
-const FriendProfile = ({ user }) => {
+const FriendProfile = () => {
   const [babies, setBabies] = useState([]);
   const [query, setQuery] = useState('');
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
   const [messages, setMessages] = useState([]);
+  const { user, setUser } = useContext(UserContext);
 
   const getPeople = async () => {
     try {
@@ -101,13 +103,13 @@ const FriendProfile = ({ user }) => {
   console.log({ user });
   return (
     <FriendProfileWrapper>
-      {user && user.type === 'FRIEND' && (
+      {user.type === 'FRIEND' && (
         <div>
           {/* <h3>Search for Babies You Know</h3> */}
           <input type="text" placeholder="Search For Babies" value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
       )}
-      {user && user.type === 'BABY' && (
+      {user.type === 'BABY' && (
         <div>
           {/* <h3>Search for Friends You Know</h3> */}
           <input
@@ -118,18 +120,18 @@ const FriendProfile = ({ user }) => {
           />
         </div>
       )}
-      {query && query.length > 0 && <Babies babies={babies} user={user} />}
-      <Requests requesters={requesters} user={user} refresh={getRequests} />
+      {query && query.length > 0 && <Babies babies={babies} />}
+      <Requests requesters={requesters} refresh={getRequests} />
       {/* <ProfileId user={user} /> */}
       {user.type === 'BABY' && (
         <>
           <h3>Create a Post for all your friends</h3>
-          <MessageForm refresh={getPeople} friends={user.friends} user={user} />
+          <MessageForm refresh={getPeople} friends={user.friends} />
         </>
       )}
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
-      <Friends refresh={getPeople} messages={messages} friends={friends} user={user} />
+      <Friends refresh={getPeople} messages={messages} friends={friends} />
     </FriendProfileWrapper>
   );
 };

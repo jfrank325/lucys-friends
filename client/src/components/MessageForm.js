@@ -39,7 +39,7 @@ const MessageFormWrapper = styled.form`
   }
 `;
 
-const MessageForm = ({ friend, user, refresh, friends }) => {
+const MessageForm = ({ friend, refresh, friends }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [showUploads, setShowUploads] = useState(false);
   const webcamRef = useRef(null);

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Axios from 'axios';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Profile from '../images/profile.png';
+import { UserContext } from '../contexts/userContext';
 
 const SendRequestWrapper = styled.div`
   margin: 0 0.5rem;
 `;
 
-const SendRequest = ({ baby, user }) => {
+const SendRequest = ({ baby }) => {
   const [showPic, setShowPic] = useState();
   const [response, setResponse] = useState();
+  const { user, setUser } = useContext(UserContext);
 
   const sendRequest = async () => {
     if (!baby._requests.includes(user._id)) {
