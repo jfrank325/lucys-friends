@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import Profile from '../images/profile.png';
 import Axios from 'axios';
 import { UserContext } from '../contexts/userContext';
+import Selfie from './Selfie';
+import { Link } from 'react-router-dom';
 
 const FriendWrapper = styled.div`
   padding: 0.5rem;
@@ -39,22 +41,10 @@ const FriendWrapper = styled.div`
   }
 `;
 
-const Friend = ({ friend, refresh, messages }) => {
-  const [createMessage, setCreateMessage] = useState(false);
+const Friend = ({ friend, refresh, messages, myProfile }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [newMessage, setNewMessage] = useState();
   const { user } = useContext(UserContext);
-
-  const nowSeen = async (mess) => {
-    try {
-      const res = await Axios.post('/api/auth/seen', {
-        seenMessage: mess,
-      });
-      console.log(res.data, 'response from seen');
-    } catch {
-      console.log('Could not add this message to seen messages');
-    }
-  };
 
   const seen = (id) => !user._seenMessages.includes(id) && setNewMessage(true);
 
@@ -62,6 +52,7 @@ const Friend = ({ friend, refresh, messages }) => {
     <FriendWrapper className={newMessage ? 'new' : 'old'}>
       <div onClick={() => setShowMessage(!showMessage)}>
         <h2>{friend.username}</h2>
+        {friend.type === 'BABY' && <Link to={`/baby/profile/${friend._id}`}>See {friend.username}'s Profile</Link>}
         {!showMessage && (
           <img
             className={newMessage ? 'new' : 'old'}
@@ -78,22 +69,13 @@ const Friend = ({ friend, refresh, messages }) => {
               message={message}
               toggleMessage={() => setShowMessage(!showMessage)}
               showMessage={showMessage}
-              nowSeen={nowSeen}
               seen={seen}
             />
           ))}
       </div>
-
-      {/* <button onClick={() => setCreateMessage(!createMessage)}>Send {friend.username} a new message</button>
-      {createMessage && ( */}
-      <MessageForm
-        toggleCreateMessage={() => setCreateMessage(!createMessage)}
-        createMessage={() => setShowMessage(!showMessage)}
-        friend={friend}
-        user={user}
-        refresh={refresh}
-      />
-      {/* )} */}
+      {myProfile && (
+        <MessageForm createMessage={() => setShowMessage(!showMessage)} friend={friend} user={user} refresh={refresh} />
+      )}
     </FriendWrapper>
   );
 };

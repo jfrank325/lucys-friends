@@ -8,7 +8,7 @@ const WebcamWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   img {
-    height: 15rem;
+    height: 8.5rem;
     width: auto;
   }
   button {
@@ -60,8 +60,8 @@ const WebcamCapture = ({ capture, selfie, setSelfie, webcamRef }) => {
         audio={false}
         ref={webcamRef}
         screenshotFormat="image/jpeg"
-        height={240}
-        width={320}
+        height={180}
+        width={240}
         videoConstraints={videoConstraints}
       />
       <button onClick={capture}>Take Photo</button>

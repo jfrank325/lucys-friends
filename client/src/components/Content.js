@@ -6,8 +6,9 @@ const ContentWrapper = styled.div`
     border: none;
     border-radius: 0.3rem;
     text-align: left;
-    height: 1.5rem;
-    width: 11.3rem;
+    ${'' /* height: 1.5rem; */}
+    font-size: 1.05rem;
+    width: 10.5rem;
   }
 `;
 

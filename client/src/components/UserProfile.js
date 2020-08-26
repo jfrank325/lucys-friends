@@ -35,9 +35,13 @@ const FriendProfileWrapper = styled.div`
     color: var(--sky);
     padding: 1rem 0;
   }
+  h2 {
+    padding: 2rem 0 0.3rem 0;
+    color: var(--sky);
+  }
 `;
 
-const FriendProfile = () => {
+const UserProfile = () => {
   const [babies, setBabies] = useState([]);
   const [query, setQuery] = useState('');
   const [requesters, setRequesters] = useState([]);
@@ -56,7 +60,7 @@ const FriendProfile = () => {
 
   useEffect(() => {
     getPeople();
-  }, []);
+  }, [user]);
 
   const getRequests = async () => {
     if (user.type === 'BABY') {
@@ -120,9 +124,9 @@ const FriendProfile = () => {
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
       <h2>{user.type === 'BABY' ? 'Your Friends' : 'Your Babies'}</h2>
-      <Friends refresh={getPeople} messages={messages} friends={friends} />
+      <Friends refresh={getPeople} messages={messages} friends={friends} myProfile={true} />
     </FriendProfileWrapper>
   );
 };
 
-export default FriendProfile;
+export default UserProfile;

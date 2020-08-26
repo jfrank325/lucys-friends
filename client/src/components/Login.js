@@ -31,7 +31,7 @@ const LoginWrapper = styled.div`
         border: none;
         border-radius: 25px;
         font-size: 1.2rem;
-        padding: 0 0.3rem;
+        padding: 0;
         &::placeholder {
           color: var(--sky);
           font-family: 'Balsamiq Sans', 'Open Sans', Arial;
@@ -40,8 +40,9 @@ const LoginWrapper = styled.div`
       }
     }
     button {
-      margin-top: 1.5rem;
       font-size: 1rem;
+      width: 6rem;
+      margin: 1.5rem auto 0 auto;
     }
   }
 `;

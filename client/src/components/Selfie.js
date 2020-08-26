@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './Selfie.css';
+// import './Selfie.css';
 
 class Selfie extends Component {
   state = {
@@ -78,7 +78,8 @@ class Selfie extends Component {
           <div className="cam">
             <video width="100%" height="100%" className="video-player" autoPlay={true} ref={this.videoEle}></video>
             <button className="btn capture-btn" onClick={this.takeSelfie}>
-              <i class="fa fa-camera" aria-hidden="true"></i>
+              {/* <i class="fa fa-camera" aria-hidden="true"></i> */}
+              Camera
             </button>
           </div>
         )}
@@ -90,10 +91,12 @@ class Selfie extends Component {
 
             <div className="btn-container">
               <button className="btn back-btn" onClick={this.backToCam}>
-                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                {/* <i class="&larr;" aria-hidden="true"></i> */}
+                &larr;
               </button>
               <a href={this.state.imageURL} download="selfie.png" className="btn download-btn">
-                <i class="fa fa-download" aria-hidden="true"></i>
+                {/* <i class="fa fa-download" aria-hidden="true"></i> */}
+                &darr;
               </a>
             </div>
           </div>

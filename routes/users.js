@@ -73,6 +73,17 @@ router.get('/messages', (req, res) => {
     });
 });
 
+router.get('/baby/messages/:id', (req, res) => {
+  User.findById(req.params.id)
+    .populate('_messages')
+    .then((messages) => {
+      res.json(messages);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'We could not retrieve messages' });
+    });
+});
+
 router.get('/requesters/:id', (req, res) => {
   const id = req.params.id;
   User.findById(id)
@@ -83,6 +94,19 @@ router.get('/requesters/:id', (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ message: `There was a problem getting this user's friend requests` });
+    });
+});
+
+router.get('/babies/friends/:id', (req, res) => {
+  const babyId = req.params.id;
+  console.log(babyId);
+  User.findById(babyId)
+    .populate('friends')
+    .then((friends) => {
+      res.json(friends.friends);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: `Could not get Babys' friends` });
     });
 });
 
@@ -137,8 +161,8 @@ router.post('/denied/:id', (req, res) => {
 });
 
 router.post('/seen', (req, res) => {
-  id = req.user._id;
-  seenMessage = req.body.seenMessage;
+  const id = req.user._id;
+  const seenMessage = req.body.seenMessage;
   console.log('ids', id, seenMessage);
   User.findByIdAndUpdate(id, { $addToSet: { _seenMessages: seenMessage } })
     .exec()

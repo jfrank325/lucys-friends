@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Axios from 'axios';
 
 const MessageWrapper = styled.div`
   img {
@@ -12,24 +13,25 @@ const MessageWrapper = styled.div`
   }
 `;
 
-const Message = ({ message, showMessage, nowSeen, seen }) => {
+const Message = ({ message, showMessage, seen }) => {
   const { content, image, video, selfie, _id } = message;
   seen(_id);
-  // const nowSeen = async () => {
-  //   try {
-  //     const res = await Axios.post('/api/auth/seen', {
-  //       seenMessage: message._id,
-  //     });
-  //     console.log(res.data, 'response from seen');
-  //   } catch {
-  //     console.log('Could not add this message to seen messages');
-  //   }
-  // };
+
+  const nowSeen = async () => {
+    try {
+      const res = await Axios.post(`/api/auth/seen`, {
+        seenMessage: message._id,
+      });
+      console.log(res.data, 'response from seen');
+    } catch {
+      console.log('Could not add this message to seen messages');
+    }
+  };
 
   return (
     <MessageWrapper>
       {showMessage && (
-        <div onClick={nowSeen(_id)}>
+        <div onClick={nowSeen}>
           {content && <h3>{content}</h3>}
           {image && <img src={image} alt="Smile" />}
           {selfie && <img src={selfie} alt="Smile" />}

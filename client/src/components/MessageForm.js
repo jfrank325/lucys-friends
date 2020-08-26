@@ -6,6 +6,7 @@ import Content from './Content';
 import Cam from '../images/Cam.png';
 import UploadPic from '../images/UploadWhite.png';
 import styled from 'styled-components';
+import VideoRecorder from './VideoRecorder';
 
 const MessageFormWrapper = styled.form`
   display: flex;
@@ -22,6 +23,7 @@ const MessageFormWrapper = styled.form`
     align-items: center;
     background-color: white;
     border-radius: 0.3rem;
+    padding-left: 0.4rem;
   }
   .photo-option {
     display: flex;
@@ -36,12 +38,16 @@ const MessageFormWrapper = styled.form`
     font-size: 0.7rem;
   }
   .send-button {
-    padding: 0.5rem;
-    height: 1.5rem;
+    padding: 0 0.6rem 0 0.6rem;
+    margin: 0;
+    height: 2rem;
+    border-radius: 0;
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+    overflow: hidden;
     font-size: 0.9rem;
     font-family: 'Balsamiq Sans', 'Open Sans', Arial;
-    background-color: var(--yellow);
-    border-radius: 0;
+    background-color: var(--sky);
   }
 `;
 
@@ -49,7 +55,9 @@ const MessageForm = ({ friend, refresh, friends }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [showUploads, setShowUploads] = useState(false);
   const webcamRef = useRef(null);
-  const [messageSent, setMessageSent] = useState();
+  const [createMessage, setCreateMessage] = useState(false);
+  const [closeForm, setCloseForm] = useState(false);
+  const [sent, setSent] = useState();
   const [message, setMessage] = useState({
     selfie: '',
     content: '',
@@ -108,21 +116,26 @@ const MessageForm = ({ friend, refresh, friends }) => {
     setMessage({ ...message, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (message.loading !== 'loading') {
-      axios
-        .post('/api/messages', {
+      try {
+        const res = await axios.post('/api/messages', {
           selfie: message.selfie,
           image: message.image,
           video: message.video,
           content: message.content,
           friend: friend,
-        })
-        .then(() => {
-          setMessage({ ...message, content: '' });
-          refresh();
         });
+        setMessage({ ...message, content: '' });
+        refresh();
+        if (res.status === 200) {
+          setSent('Message Sent!');
+        }
+        setCloseForm(!closeForm);
+      } catch {
+        console.log('could not submit');
+      }
     }
   };
 
@@ -138,11 +151,11 @@ const MessageForm = ({ friend, refresh, friends }) => {
           friends: friends,
         });
         setMessage({ ...message, content: '' });
-
         refresh();
         if (res.status === 200) {
-          setMessageSent('Your message was sent');
+          setSent('Message Sent!');
         }
+        setCloseForm(!closeForm);
       } catch {
         console.log('could not submit');
       }
@@ -150,41 +163,49 @@ const MessageForm = ({ friend, refresh, friends }) => {
   };
 
   return (
-    <MessageFormWrapper
-      className="create-message"
-      encType="multipart/form-data"
-      onSubmit={friends ? handleAllSubmit : handleSubmit}
-    >
-      <div className="content-send">
-        <Content content={message.content} sent={messageSent} handleChange={handleChange} />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <button className="sent-button" onClick={refresh}>
-            SEND
-          </button>
+    <>
+      {/* {!createMessage ? ( */}
+      {/* <button onClick={() => setCreateMessage(!createMessage)}>Send {friend && friend.username} a new message</button> */}
+      {/* ) : ( */}
+      <MessageFormWrapper
+        className="create-message"
+        encType="multipart/form-data"
+        onSubmit={friends ? handleAllSubmit : handleSubmit}
+      >
+        <div className="content-send">
+          <Content content={message.content} sent={sent} handleChange={handleChange} />
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <button className="send-button" onClick={refresh}>
+              SEND
+            </button>
+          </div>
         </div>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '20rem' }}>
-        <div className="photo-option" onClick={() => setShowWebcam(!showWebcam)}>
-          <p>Take Photo</p>
-          <img style={{ height: '1rem', width: 'auto', marginLeft: '.5rem' }} src={Cam} alt="take a selfie" />
-        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '20rem' }}>
+          <div className="photo-option" onClick={() => setShowWebcam(!showWebcam)}>
+            <p>Take Photo</p>
+            <img style={{ height: '1rem', width: 'auto', marginLeft: '.5rem' }} src={Cam} alt="take a selfie" />
+          </div>
 
-        <div className="photo-option" onClick={() => setShowUploads(!showUploads)}>
-          <p>Photo/Video</p>
-          <img
-            style={{ height: '1.5rem', width: 'auto', marginLeft: '.5rem' }}
-            src={UploadPic}
-            alt="Upload a selfie or video"
-          />
+          <div className="photo-option" onClick={() => setShowUploads(!showUploads)}>
+            <p>Photo/Video</p>
+            <img
+              style={{ height: '1rem', width: 'auto', marginLeft: '.5rem' }}
+              src={UploadPic}
+              alt="Upload a selfie or video"
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        {showUploads && (
-          <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
-        )}
-        {showWebcam && <WebcamCapture capture={capture} selfie={message.selfie} webcamRef={webcamRef} />}
-      </div>
-    </MessageFormWrapper>
+        <div>
+          {showUploads && !closeForm && (
+            <Upload id="uploads" uploadImage={uploadImage} uploadVideo={uploadVideo} loading={message.loading} />
+          )}
+          {showWebcam && !closeForm && (
+            <WebcamCapture capture={capture} selfie={message.selfie} webcamRef={webcamRef} />
+          )}
+        </div>
+      </MessageFormWrapper>
+      {/* )} */}
+    </>
   );
 };
 

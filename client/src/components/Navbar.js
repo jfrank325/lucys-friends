@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import LF from '../images/LucyMiniLogo.png';
 import Profile from '../images/profile.png';
+import Settings from '../images/SettingsBlue.png';
 import styled from 'styled-components';
 
 const NavbarWrapper = styled.header`
@@ -68,7 +69,9 @@ const Navbar = ({ user, setUser }) => {
               <Link to="/friend/profile">
                 <img style={{ width: '2rem' }} src={user.profilePic ? user.profilePic : Profile} alt="Profile" />
               </Link>
-
+              <Link to="/settings">
+                <img src={Settings} alt="settings" />
+              </Link>
               <Link onClick={logout} to="/">
                 Log Out
               </Link>

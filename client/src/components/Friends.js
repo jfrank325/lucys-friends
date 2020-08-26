@@ -9,12 +9,12 @@ const FriendsWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Friends = ({ refresh, messages, friends }) => {
+const Friends = ({ refresh, messages, friends, myProfile }) => {
   return (
     <FriendsWrapper>
       {' '}
       {friends.map((friend) => (
-        <Friend refresh={refresh} messages={messages} friend={friend} key={friend._id} />
+        <Friend refresh={refresh} messages={messages} friend={friend} myProfile={myProfile} key={friend._id} />
       ))}
     </FriendsWrapper>
   );
