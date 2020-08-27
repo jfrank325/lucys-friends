@@ -41,7 +41,7 @@ const FriendProfileWrapper = styled.div`
   }
 `;
 
-const BabyProfile = (props) => {
+const NonUserProfile = (props) => {
   const babyId = props.match.params.id;
   const [babiesFriends, setBabiesFriends] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -85,4 +85,4 @@ const BabyProfile = (props) => {
   );
 };
 
-export default BabyProfile;
+export default NonUserProfile;

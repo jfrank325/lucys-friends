@@ -49,6 +49,12 @@ const userSchema = new Schema(
         ref: 'Message',
       },
     ],
+    _families: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Family',
+      },
+    ],
   },
   {
     timestamps: {

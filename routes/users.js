@@ -176,6 +176,18 @@ router.post('/seen', (req, res) => {
     });
 });
 
+router.get('/myFamilies', (req, res) => {
+  User.findById(req.user._id)
+    // .populate('_families')
+    .populate({ path: '_families', ref: '_members', populate: { path: '_members', model: 'User' } })
+    .then((families) => {
+      res.json(families._families);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: `Could not get user's families` });
+    });
+});
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {

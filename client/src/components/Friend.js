@@ -8,6 +8,8 @@ import Axios from 'axios';
 import { UserContext } from '../contexts/userContext';
 import Selfie from './Selfie';
 import { Link } from 'react-router-dom';
+import { useDrag } from 'react-dnd';
+import { ItemTypes } from '../utils/items';
 
 const FriendWrapper = styled.div`
   padding: 0.5rem;
@@ -48,8 +50,19 @@ const Friend = ({ friend, refresh, messages, myProfile }) => {
 
   const seen = (id) => !user._seenMessages.includes(id) && setNewMessage(true);
 
+  const [{ isDragging }, drag] = useDrag({
+    item: {
+      type: ItemTypes.CARD,
+      id: friend._id,
+      face: friend.profilePic,
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
+
   return (
-    <FriendWrapper className={newMessage ? 'new' : 'old'}>
+    <FriendWrapper className={newMessage ? 'new' : 'old'} ref={drag}>
       <div onClick={() => setShowMessage(!showMessage)}>
         <h2>{friend.username}</h2>
         {friend.type === 'BABY' && <Link to={`/baby/profile/${friend._id}`}>See {friend.username}'s Profile</Link>}

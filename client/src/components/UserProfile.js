@@ -6,6 +6,8 @@ import Friends from './Friends';
 import Babies from './Babies';
 import MessageForm from './MessageForm';
 import { UserContext } from '../contexts/userContext';
+import FamilyBuilder from './FamilyBuilder';
+import Families from './Families';
 
 const FriendProfileWrapper = styled.div`
   input {
@@ -42,24 +44,36 @@ const FriendProfileWrapper = styled.div`
 `;
 
 const UserProfile = () => {
-  const [babies, setBabies] = useState([]);
+  const [people, setPeople] = useState([]);
   const [query, setQuery] = useState('');
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [families, setFamilies] = useState([]);
   const { user } = useContext(UserContext);
 
   const getPeople = async () => {
     try {
       const res = await axios.get('/api/auth/babies');
-      setBabies(res.data);
+      setPeople(res.data);
     } catch {
       console.log('Could not get babies');
     }
   };
 
+  const getFamilies = async () => {
+    try {
+      const res = await axios.get(`/api/auth/myFamilies`);
+      setFamilies(res.data);
+      console.log('families', res.data);
+    } catch {
+      console.log(`Could not get user's families`);
+    }
+  };
+
   useEffect(() => {
     getPeople();
+    getFamilies();
   }, [user]);
 
   const getRequests = async () => {
@@ -94,13 +108,18 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    let filteredbabies = [...babies].filter((baby) => baby.username.toLowerCase().includes(query.toLowerCase()));
+    let filteredPeople = [...people].filter((person) => person.username.toLowerCase().includes(query.toLowerCase()));
     if (query.length > 0) {
-      setBabies(filteredbabies);
+      setPeople(filteredPeople);
     } else {
       getPeople();
     }
   }, [query]);
+
+  const showFamily = (family) => {
+    setFriends(family);
+  };
+
   console.log({ user });
   return (
     <FriendProfileWrapper>
@@ -112,7 +131,7 @@ const UserProfile = () => {
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
-      {query && query.length > 0 && <Babies babies={babies} />}
+      {query && query.length > 0 && <Babies babies={people} />}
       <Requests requesters={requesters} refresh={getRequests} />
       {/* <ProfileId user={user} /> */}
       {user.type === 'BABY' && (
@@ -121,6 +140,8 @@ const UserProfile = () => {
           <MessageForm refresh={getPeople} friends={user.friends} />
         </>
       )}
+      <Families families={families} showFamily={showFamily} />
+      <FamilyBuilder />
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
       <h2>{user.type === 'BABY' ? 'Your Friends' : 'Your Babies'}</h2>
