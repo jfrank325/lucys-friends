@@ -51,6 +51,7 @@ const UserProfile = () => {
   const [messages, setMessages] = useState([]);
   const [families, setFamilies] = useState([]);
   const { user } = useContext(UserContext);
+  const [thisFamily, setThisFamily] = useState();
 
   const getPeople = async () => {
     try {
@@ -80,8 +81,9 @@ const UserProfile = () => {
     if (user.type === 'BABY') {
       try {
         const res = await axios.get(`/api/auth/requesters/${user._id}`);
+        const { friends } = res.data;
         setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
-        setFriends(res.data.friends);
+        setFriends([...friends]);
       } catch {
         console.log('Could not get requests');
       }
@@ -111,16 +113,11 @@ const UserProfile = () => {
     let filteredPeople = [...people].filter((person) => person.username.toLowerCase().includes(query.toLowerCase()));
     if (query.length > 0) {
       setPeople(filteredPeople);
-    } else {
-      getPeople();
     }
   }, [query]);
 
-  const showFamily = (family) => {
-    setFriends(family);
-  };
-
-  console.log({ user });
+  // console.log({ user });
+  // console.log({ friends });
   return (
     <FriendProfileWrapper>
       <div>
@@ -140,7 +137,7 @@ const UserProfile = () => {
           <MessageForm refresh={getPeople} friends={user.friends} />
         </>
       )}
-      <Families families={families} showFamily={showFamily} />
+      <Families families={families} />
       <FamilyBuilder />
       {/* <h3>{user.username}</h3>
       <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}

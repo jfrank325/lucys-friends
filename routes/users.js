@@ -129,10 +129,10 @@ router.post(`/request`, (req, res) => {
 
 router.post('/accepted/:id', (req, res) => {
   const friendId = req.params.id;
-  const babyId = req.body.baby;
-  User.findByIdAndUpdate({ _id: friendId }, { $addToSet: { friends: babyId } }, { new: true }).exec();
-  User.findByIdAndUpdate({ _id: babyId }, { $addToSet: { friends: friendId } }, { new: true }).exec();
-  User.findByIdAndUpdate({ _id: babyId }, { $pull: { _requests: friendId } }, { new: true })
+  const user = req.user._id;
+  User.findByIdAndUpdate({ _id: friendId }, { $addToSet: { friends: user } }, { new: true }).exec();
+  User.findByIdAndUpdate({ _id: user }, { $addToSet: { friends: friendId } }, { new: true }).exec();
+  User.findByIdAndUpdate({ _id: user }, { $pull: { _requests: friendId } }, { new: true })
     .exec()
     .then((accepted) => {
       res.json(accepted);
@@ -157,6 +157,51 @@ router.post('/denied/:id', (req, res) => {
       res.status(500).json({
         message: err.message,
       });
+    });
+});
+
+router.post('/settings/emailNotifications', (req, res) => {
+  const id = req.user._id;
+  const user = req.user;
+  User.findByIdAndUpdate(id, {
+    $set: { emailNotifications: !user.emailNotifications ? true : false },
+  })
+    .exec()
+    .then((update) => {
+      res.json(update);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+});
+
+router.post('/settings/profileVisibleToFriends', (req, res) => {
+  const id = req.user._id;
+  const user = req.user;
+  User.findByIdAndUpdate(id, {
+    $set: { profileVisibleToFriends: !user.profileVisibleToFriends ? true : false },
+  })
+    .exec()
+    .then((update) => {
+      res.json(update);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+});
+
+router.post('/settings/profilePublic', (req, res) => {
+  const id = req.user._id;
+  const user = req.user;
+  User.findByIdAndUpdate(id, {
+    $set: { profilePublic: !user.profilePublic ? true : false },
+  })
+    .exec()
+    .then((update) => {
+      res.json(update);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 });
 

@@ -10,9 +10,7 @@ const Requests = ({ requesters, user, refresh }) => {
 
   const acceptRequest = async (id) => {
     try {
-      const res = await axios.post(`/api/auth/accepted/${id}`, {
-        baby: user._id,
-      });
+      const res = await axios.post(`/api/auth/accepted/${id}`);
       refresh();
       setResponse(`You are now friends`);
       console.log(res.data);

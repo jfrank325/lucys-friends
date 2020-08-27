@@ -1,11 +1,10 @@
 import React from 'react';
 
-const Family = ({ family, showFamily }) => {
+const Family = ({ family }) => {
   return (
-    // <div onClick={showFamily(family)}>
-    <h4>{family.name}</h4>
-    //{' '}
-    // </div>
+    <button>
+      <h4>{family.name}</h4>
+    </button>
   );
 };
 

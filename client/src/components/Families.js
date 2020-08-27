@@ -1,11 +1,11 @@
 import React from 'react';
 import Family from './Family';
 
-const Families = ({ families, showFamily }) => {
+const Families = ({ families }) => {
   return (
     <div>
       {families.map((family) => (
-        <Family family={family} showFamily={showFamily} />
+        <Family family={family} key={family._id} />
       ))}
     </div>
   );

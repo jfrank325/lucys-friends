@@ -23,19 +23,19 @@ const FamilyBuilderWrapper = styled.div`
     justify-content: center;
   }
   img {
-    height: 2rem;
+    height: 3rem;
     width: auto;
   }
 `;
 
 const FamilyBuilder = () => {
-  // const { user } = useContext(UserContext);
-
+  const [familySuccess, setFamilySuccess] = useState();
   const [family, setFamily] = useState({
     name: '',
     members: [],
     faces: [],
   });
+
   const [{ isOver }, drop] = useDrop({
     accept: ItemTypes.CARD,
     drop: (item) =>
@@ -56,13 +56,14 @@ const FamilyBuilder = () => {
         name: family.name,
         members: family.members,
       });
-      console.log('res from family', res.data);
+      setFamilySuccess(`${res.data.name} was created!`);
+      console.log('done');
     } catch {
       console.log('Problem with family request');
     }
   };
 
-  console.log({ family });
+  // console.log({ family });
 
   return (
     <FamilyBuilderWrapper>
@@ -78,8 +79,10 @@ const FamilyBuilder = () => {
           />
         </label>
         <div style={{ width: '17rem', height: '10rem' }} ref={drop}>
-          {family.faces.map((face) => (
+          <h3>{familySuccess}</h3>
+          {family.faces.map((face, i) => (
             <img
+              key={i}
               onClick={() => setFamily({ ...family, faces: family.faces.filter((keptFace) => keptFace !== face) })}
               src={face}
               alt="friend"

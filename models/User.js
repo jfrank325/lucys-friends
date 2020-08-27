@@ -55,6 +55,18 @@ const userSchema = new Schema(
         ref: 'Family',
       },
     ],
+    emailNotifications: {
+      type: Boolean,
+      default: false,
+    },
+    profilePublic: {
+      type: Boolean,
+      default: false,
+    },
+    profileVisibleToFriends: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: {
