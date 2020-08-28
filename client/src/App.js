@@ -19,7 +19,7 @@ const App = (props) => {
   const setThisUser = (userObj) => {
     setUser(userObj);
   };
-  const value = useMemo(() => ({ user }), [user]);
+  const value = useMemo(() => ({ user, setThisUser }), [user, setThisUser]);
 
   return (
     <div className="App">

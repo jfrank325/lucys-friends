@@ -1,10 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Axios from 'axios';
-import { UserContext } from '../contexts/userContext';
+import styled from 'styled-components';
+import Setting from './Setting';
+
+const SettingsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  .inner-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    ${'' /* width: 28rem; */}
+    margin: 2rem auto;
+  }
+`;
 
 const Settings = () => {
-  const { user } = useContext(UserContext);
-
   const updateEmailPreference = async () => {
     try {
       const res = await Axios.post('/api/auth/settings/emailNotifications');
@@ -33,11 +44,13 @@ const Settings = () => {
   };
 
   return (
-    <div>
-      <button onClick={updateEmailPreference}>Allow Email Notifications</button>
-      <button onClick={updateVisibleToFriends}>Allow Profile To Visible To Friends</button>
-      <button onClick={updateProfilePublic}>Allow Profile To Be Public</button>
-    </div>
+    <SettingsWrapper>
+      <div className="inner-wrapper">
+        <Setting updateSetting={updateEmailPreference} message={'Allow Email Notifications'} />
+        <Setting updateSetting={updateVisibleToFriends} message={'Allow Profile To Be Visible To Friends'} />
+        <Setting updateSetting={updateProfilePublic} message={'Allow Profile To Visible To Public'} />
+      </div>
+    </SettingsWrapper>
   );
 };
 

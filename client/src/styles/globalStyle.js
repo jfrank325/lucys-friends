@@ -32,7 +32,7 @@ button {
   border-radius: 25px;
   border: none;
   padding: 0.5rem 0.5rem;
-  font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+  font-family: 'Ubuntu','Balsamiq Sans', 'Open Sans', Arial;
   cursor: pointer;
 }
 
@@ -40,7 +40,7 @@ body {
   background-color: #f1f1f1;
   font-size: 16px;
   ${'' /* font-family: Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */}
-  font-family: 'Balsamiq Sans', 'Open Sans', Arial;
+  font-family: 'Ubuntu','Balsamiq Sans', 'Open Sans', Arial;
   font-weight: 600;
   ${'' /* line-height: 1.6rem; */}
   letter-spacing: 0.05rem;

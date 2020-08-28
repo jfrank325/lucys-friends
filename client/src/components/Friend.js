@@ -18,6 +18,7 @@ const FriendWrapper = styled.div`
   border-radius: 5px;
   h2 {
     color: var(--sky);
+    padding: 0.5rem;
   }
   img {
     width: auto;

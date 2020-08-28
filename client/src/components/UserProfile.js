@@ -37,10 +37,6 @@ const FriendProfileWrapper = styled.div`
     color: var(--sky);
     padding: 1rem 0;
   }
-  h2 {
-    padding: 2rem 0 0.3rem 0;
-    color: var(--sky);
-  }
 `;
 
 const UserProfile = () => {

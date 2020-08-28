@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
-import { UserContext } from '../contexts/userContext';
 import Axios from 'axios';
 import styled from 'styled-components';
 
