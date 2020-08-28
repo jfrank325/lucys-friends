@@ -1,9 +1,12 @@
 import React from 'react';
 
 const View = ({ type, setView }) => {
+  const makeView = () => {
+    setView(type);
+  };
   return (
     <div>
-      <button onClick={setView(type)}>{type}</button>
+      <button onClick={makeView}>{type}</button>
     </div>
   );
 };

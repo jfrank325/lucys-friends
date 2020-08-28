@@ -42,8 +42,8 @@ const UserProfile = () => {
   const [messages, setMessages] = useState([]);
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
-  const { user } = useContext(UserContext);
   const [view, setView] = useState('Messages');
+  const { user } = useContext(UserContext);
 
   const getPeople = async () => {
     try {
@@ -85,15 +85,17 @@ const UserProfile = () => {
     setView(viewType);
   };
   const search = (e) => setQuery(e.target.value);
+
   console.log('view', view);
+
   return (
     <ProfileWrapper>
       <Views setView={changeView} />
       <SearchPeople query={query} search={search} />
       {query && query.length > 0 && <Babies babies={queryPeople} />}
       <Requests requesters={requesters} refresh={getUserInfo} />
-      <Friends refresh={getPeople} messages={messages} friends={friends} myProfile={true} />
-      <AdultMessages messages={messages} />
+      {view === 'Friends' && <Friends refresh={getPeople} messages={messages} friends={friends} myProfile={true} />}
+      {view === 'Messages' && <AdultMessages messages={messages} />}
     </ProfileWrapper>
   );
 };
