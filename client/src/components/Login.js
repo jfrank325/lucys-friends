@@ -68,7 +68,11 @@ const Login = ({ setUser, history }) => {
       })
       .then((response) => {
         setUser(response.data);
-        history.push('/friend/profile');
+        if (response.data.type === 'BABY') {
+          history.push('/friend/profile');
+        } else {
+          history.push('/profile');
+        }
       })
       .catch((err) => {
         setState({ ...state, message: err.response.data.message });

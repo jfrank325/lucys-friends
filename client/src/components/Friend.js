@@ -12,6 +12,7 @@ import { useDrag } from 'react-dnd';
 import { ItemTypes } from '../utils/items';
 
 const FriendWrapper = styled.div`
+  cursor: pointer;
   padding: 0.5rem;
   background-color: var(--yellow);
   margin: 1rem;
@@ -75,7 +76,7 @@ const Friend = ({ friend, refresh, messages, myProfile }) => {
           />
         )}
         {messages
-          .filter((message) => message._author === friend._id)
+          .filter((message) => message._author._id === friend._id)
           .slice(-1)
           .map((message) => (
             <Message

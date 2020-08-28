@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Axios from 'axios';
 
 const MessageWrapper = styled.div`
+  cursor: pointer;
   img {
     height: auto;
     width: 320px;

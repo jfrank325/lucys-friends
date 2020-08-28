@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import Axios from 'axios';
+import { UserContext } from '../contexts/userContext';
+import AdultMessages from './AdultMessages';
+import Babies from './Babies';
 import styled from 'styled-components';
 import Requests from './Requests';
 import Friends from './Friends';
-import Babies from './Babies';
-import MessageForm from './MessageForm';
-import { UserContext } from '../contexts/userContext';
-import FamilyBuilder from './FamilyBuilder';
-import Families from './Families';
+import SearchPeople from './SearchPeople';
+import Views from './Views';
 
-const FriendProfileWrapper = styled.div`
+const ProfileWrapper = styled.div`
   input {
     border: none;
     border-top: solid 0.2rem var(--sky);
@@ -33,113 +33,68 @@ const FriendProfileWrapper = styled.div`
       color: transparent;
     }
   }
-  h3 {
-    color: var(--sky);
-    padding: 1rem 0;
-  }
 `;
 
 const UserProfile = () => {
   const [people, setPeople] = useState([]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState([]);
+  const [queryPeople, setQueryPeople] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [families, setFamilies] = useState([]);
   const { user } = useContext(UserContext);
-  const [thisFamily, setThisFamily] = useState();
+  const [view, setView] = useState('Messages');
 
   const getPeople = async () => {
     try {
-      const res = await axios.get('/api/auth/babies');
-      setPeople(res.data);
+      const res = await Axios.get('/api/auth/people');
+      const people = res.data;
+      setPeople([...people]);
     } catch {
       console.log('Could not get babies');
     }
   };
 
-  const getFamilies = async () => {
+  const getUserInfo = async () => {
     try {
-      const res = await axios.get(`/api/auth/myFamilies`);
-      setFamilies(res.data);
-      console.log('families', res.data);
-    } catch {
-      console.log(`Could not get user's families`);
-    }
-  };
-
-  useEffect(() => {
-    getPeople();
-    getFamilies();
-  }, [user]);
-
-  const getRequests = async () => {
-    if (user.type === 'BABY') {
-      try {
-        const res = await axios.get(`/api/auth/requesters/${user._id}`);
-        const { friends } = res.data;
-        setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
-        setFriends([...friends]);
-      } catch {
-        console.log('Could not get requests');
-      }
-    } else {
-      const res = await axios.get(`/api/auth/requesters/${user._id}`);
-      setFriends(res.data.friends);
-    }
-  };
-
-  useEffect(() => {
-    getRequests();
-  }, [requesters.length]);
-
-  const getMessages = async () => {
-    try {
-      const res = await axios.get(`/api/auth/messages`);
+      const res = await Axios.get(`/api/auth/getAll`);
+      const { friends } = res.data;
+      setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
+      setFriends([...friends]);
       setMessages(res.data._messages);
     } catch {
-      console.log('Could not get messages');
+      console.log('Could not get requests');
     }
   };
+
   useEffect(() => {
-    getMessages();
+    getUserInfo();
+    getPeople();
   }, []);
 
   useEffect(() => {
     let filteredPeople = [...people].filter((person) => person.username.toLowerCase().includes(query.toLowerCase()));
     if (query.length > 0) {
-      setPeople(filteredPeople);
+      setQueryPeople(filteredPeople);
+    } else {
+      setQueryPeople(people);
     }
   }, [query]);
 
-  // console.log({ user });
-  // console.log({ friends });
+  const changeView = (viewType) => {
+    setView(viewType);
+  };
+  const search = (e) => setQuery(e.target.value);
+  console.log('view', view);
   return (
-    <FriendProfileWrapper>
-      <div>
-        <input
-          type="text"
-          placeholder={user.type === 'FRIEND' ? 'Search For Babies' : 'Search For New Friends'}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
-      {query && query.length > 0 && <Babies babies={people} />}
-      <Requests requesters={requesters} refresh={getRequests} />
-      {/* <ProfileId user={user} /> */}
-      {user.type === 'BABY' && (
-        <>
-          <h3>Create a Post for all your friends</h3>
-          <MessageForm refresh={getPeople} friends={user.friends} />
-        </>
-      )}
-      <Families families={families} />
-      <FamilyBuilder />
-      {/* <h3>{user.username}</h3>
-      <img src={user.profilePic ? user.profilePic : Profile} alt="Profile" /> */}
-      <h2>{user.type === 'BABY' ? 'Your Friends' : 'Your Babies'}</h2>
+    <ProfileWrapper>
+      <Views setView={changeView} />
+      <SearchPeople query={query} search={search} />
+      {query && query.length > 0 && <Babies babies={queryPeople} />}
+      <Requests requesters={requesters} refresh={getUserInfo} />
       <Friends refresh={getPeople} messages={messages} friends={friends} myProfile={true} />
-    </FriendProfileWrapper>
+      <AdultMessages messages={messages} />
+    </ProfileWrapper>
   );
 };
 

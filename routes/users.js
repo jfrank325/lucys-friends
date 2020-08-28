@@ -42,18 +42,19 @@ router.post('/signup', (req, res) => {
     });
 });
 
-router.get('/babies', (req, res) => {
+router.get('/people', (req, res) => {
   User.find()
     .limit(30)
-    .then((babies) => {
-      const onlyBabies = babies.filter((baby) => baby.type === 'BABY');
-      const onlyAdults = babies.filter((baby) => baby.type === 'FRIEND');
-      if (req.user.type === 'FRIEND') {
-        res.json(onlyBabies);
-      }
-      if (req.user.type === 'BABY') {
-        res.json(onlyAdults);
-      }
+    .then((people) => {
+      res.json(people);
+      //   const onlyBabies = babies.filter((baby) => baby.type === 'BABY');
+      //   const onlyAdults = babies.filter((baby) => baby.type === 'FRIEND');
+      //   if (req.user.type === 'FRIEND') {
+      //     res.json(onlyBabies);
+      //   }
+      //   if (req.user.type === 'BABY') {
+      //     res.json(onlyAdults);
+      //   }
     })
     .catch((err) => {
       res.status(500).json({
@@ -64,7 +65,7 @@ router.get('/babies', (req, res) => {
 
 router.get('/messages', (req, res) => {
   User.findById(req.user._id)
-    .populate('_messages')
+    .populate({ path: '_messages', ref: '_author', populate: { path: '_author', model: 'User' } })
     .then((messages) => {
       res.json(messages);
     })
@@ -84,11 +85,13 @@ router.get('/baby/messages/:id', (req, res) => {
     });
 });
 
-router.get('/requesters/:id', (req, res) => {
-  const id = req.params.id;
+router.get('/getAll', (req, res) => {
+  const id = req.user._id;
   User.findById(id)
+    .populate({ path: '_messages', ref: '_author', populate: { path: '_author', model: 'User' } })
     .populate('_requests')
     .populate('friends')
+    .populate({ path: '_families', ref: '_members', populate: { path: '_members', model: 'User' } })
     .then((requesters) => {
       res.json(requesters);
     })

@@ -18,6 +18,19 @@ const SettingWrapper = styled.div`
     width: 2rem;
     height: 1rem;
   }
+  .button-background-on {
+    width: 2.6rem;
+    height: 1.4rem;
+    border: 0.2rem solid var(--sky);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 25px;
+    width: 2rem;
+    height: 1rem;
+    background-color: var(--gray);
+  }
   .on {
     background-color: var(--sky);
     align-self: flex-end;
@@ -45,10 +58,9 @@ const Setting = ({ updateSetting, message }) => {
     setSelected(!selected);
   };
 
-  console.log(selected);
   return (
     <SettingWrapper>
-      <div className="button-background">
+      <div className={selected ? 'button-background-on' : 'button-background'}>
         <button className={selected ? 'on' : 'off'} onClick={updateAndToggle}></button>
       </div>
       <h3>{message}</h3>

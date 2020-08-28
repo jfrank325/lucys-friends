@@ -66,7 +66,7 @@ const Navbar = ({ user, setUser }) => {
         {user && (
           <div className="link-container">
             <div className="auth-links">
-              <Link to="/friend/profile">
+              <Link to="/profile">
                 <img style={{ width: '2rem' }} src={user.profilePic ? user.profilePic : Profile} alt="Profile" />
               </Link>
               <Link to="/settings">
