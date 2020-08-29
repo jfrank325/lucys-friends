@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import Upload from './Upload';
 import WebcamCapture from './WebcamCapture';
@@ -6,7 +6,10 @@ import Content from './Content';
 import Cam from '../images/Cam.png';
 import UploadPic from '../images/UploadWhite.png';
 import styled from 'styled-components';
-import VideoRecorder from './VideoRecorder';
+import { UserContext } from '../contexts/userContext';
+import io from 'socket.io-client';
+
+const socket = io(process.env.SERVER);
 
 const MessageFormWrapper = styled.form`
   display: flex;
@@ -58,6 +61,8 @@ const MessageForm = ({ friend, refresh, friends }) => {
   const [createMessage, setCreateMessage] = useState(false);
   const [closeForm, setCloseForm] = useState(false);
   const [sent, setSent] = useState();
+  const [newMessage, setNewMessage] = useState();
+  const { user } = useContext(UserContext);
   const [message, setMessage] = useState({
     selfie: '',
     content: '',
@@ -127,6 +132,12 @@ const MessageForm = ({ friend, refresh, friends }) => {
           content: message.content,
           friend: friend,
         });
+        socket.emit('chat', {
+          message: message.content,
+          handler: user.username,
+          friend: friend._id,
+          user: user.username,
+        });
         setMessage({ ...message, content: '' });
         refresh();
         if (res.status === 200) {
@@ -162,6 +173,11 @@ const MessageForm = ({ friend, refresh, friends }) => {
     }
   };
 
+  socket.on('chat', function (data) {
+    setNewMessage(data.message);
+    console.log({ data }, 'form socket');
+  });
+
   return (
     <>
       {/* {!createMessage ? ( */}
@@ -172,6 +188,7 @@ const MessageForm = ({ friend, refresh, friends }) => {
         encType="multipart/form-data"
         onSubmit={friends ? handleAllSubmit : handleSubmit}
       >
+        <p>{newMessage}</p>
         <div className="content-send">
           <Content content={message.content} sent={sent} handleChange={handleChange} />
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
