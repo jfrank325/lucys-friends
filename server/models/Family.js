@@ -10,6 +10,12 @@ const familySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    _messages: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Message',
+      },
+    ],
     _members: [
       {
         type: Schema.Types.ObjectId,

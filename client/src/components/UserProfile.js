@@ -8,6 +8,8 @@ import Requests from './Requests';
 import Friends from './Friends';
 import SearchPeople from './SearchPeople';
 import Views from './Views';
+import Families from './Families';
+import MessageFormChat from './MessageFormChat';
 
 const ProfileWrapper = styled.div`
   input {
@@ -42,6 +44,7 @@ const UserProfile = () => {
   const [messages, setMessages] = useState([]);
   const [requesters, setRequesters] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [families, setFamilies] = useState();
   const [view, setView] = useState('Messages');
   const { user } = useContext(UserContext);
 
@@ -62,6 +65,7 @@ const UserProfile = () => {
       setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
       setFriends([...friends]);
       setMessages(res.data._messages);
+      setFamilies(res.data._families);
     } catch {
       console.log('Could not get requests');
     }
@@ -86,14 +90,13 @@ const UserProfile = () => {
   };
   const search = (e) => setQuery(e.target.value);
 
-  console.log('view', view);
-
   return (
     <ProfileWrapper>
       <Views setView={changeView} />
       <SearchPeople query={query} search={search} />
       {query && query.length > 0 && <Babies babies={queryPeople} />}
       <Requests requesters={requesters} refresh={getUserInfo} />
+      <Families families={families} />
       {view === 'Friends' && <Friends refresh={getPeople} messages={messages} friends={friends} myProfile={true} />}
       {view === 'Messages' && <AdultMessages messages={messages} />}
     </ProfileWrapper>

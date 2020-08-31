@@ -13,6 +13,7 @@ import Home from './components/Home';
 import Settings from './components/Settings';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import FamilyChat from './components/FamilyChat';
 
 const App = (props) => {
   const [user, setUser] = useState(props.user);
@@ -35,6 +36,11 @@ const App = (props) => {
             <Route exact path="/baby/profile/:id" render={(props) => <NonUserProfile {...props} />} />
             <Route exact path="/settings" render={(props) => <Settings {...props} />} />
             <Route exact path="/profile" render={(props) => <UserProfile {...props} />} />
+            <Route
+              exact
+              path="/familyChat/:name"
+              render={(props) => <FamilyChat history={props.history} {...props} />}
+            />
           </div>
         </DndProvider>
       </UserContext.Provider>

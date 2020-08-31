@@ -17,9 +17,9 @@ const AdultMessage = ({ message }) => {
   const { content, created_at, image, selfie, video, _author } = message;
   return (
     <AdultMessageWrapper>
-      {image && <AdultImage image={image} authorImage={_author.profilePic} author={_author.username} />}
+      {/* {image && <AdultImage image={image} authorImage={_author.profilePic} author={_author.username} />}
       {selfie && <AdultImage image={selfie} authorImage={_author.profilePic} author={_author.username} />}
-      {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />}
+      {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />} */}
       {content && <AdultContent image={_author.profilePic} author={_author.username} content={content} />}
     </AdultMessageWrapper>
   );

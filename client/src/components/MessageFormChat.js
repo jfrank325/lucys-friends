@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import axios from 'axios';
 import Upload from './Upload';
 import WebcamCapture from './WebcamCapture';
@@ -7,9 +7,11 @@ import Cam from '../images/Cam.png';
 import UploadPic from '../images/UploadWhite.png';
 import styled from 'styled-components';
 import { UserContext } from '../contexts/userContext';
-// import io from 'socket.io-client';
-
-// const socket = io(process.env.SERVER);
+import io from 'socket.io-client';
+import Input from './Input';
+import FamilyMessages from './FamilyMessages';
+const PORT = process.env.SERVER;
+const socket = io(PORT);
 
 const MessageFormWrapper = styled.form`
   display: flex;
@@ -54,7 +56,7 @@ const MessageFormWrapper = styled.form`
   }
 `;
 
-const MessageForm = ({ friend, refresh, friends }) => {
+const MessageFormChat = ({ friend, refresh, friends }) => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [showUploads, setShowUploads] = useState(false);
   const webcamRef = useRef(null);
@@ -63,6 +65,9 @@ const MessageForm = ({ friend, refresh, friends }) => {
   const [sent, setSent] = useState();
   const [newMessage, setNewMessage] = useState();
   const { user } = useContext(UserContext);
+  const [members, setMembers] = useState([]);
+  const [messages, setMessages] = useState();
+  const name = user.username;
   const [message, setMessage] = useState({
     selfie: '',
     content: '',
@@ -70,6 +75,25 @@ const MessageForm = ({ friend, refresh, friends }) => {
     video: '',
     loading: 'waiting',
   });
+
+  useEffect(() => {
+    const name = user.username;
+    const room = [user.username, friend.username].sort();
+    socket.emit('join', { name, room }, () => {});
+    return () => {
+      socket.emit('disconnect');
+      socket.off();
+    };
+  }, [PORT]);
+
+  useEffect(() => {
+    socket.on('message', (message) => {
+      setMessages([...messages, message]);
+    });
+    socket.on('roomData', ({ users }) => {
+      setMembers(users);
+    });
+  }, [messages]);
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -132,12 +156,15 @@ const MessageForm = ({ friend, refresh, friends }) => {
           content: message.content,
           friend: friend,
         });
-        // socket.emit('chat', {
-        //   message: message.content,
-        //   handler: user.username,
-        //   friend: friend._id,
-        //   user: user.username,
-        // });
+        socket.emit('sendMessage', {
+          selfie: message.selfie,
+          image: message.image,
+          video: message.video,
+          content: message.content,
+          handler: user.username,
+          friend: friend._id,
+          user: user.username,
+        });
         setMessage({ ...message, content: '' });
         refresh();
         if (res.status === 200) {
@@ -173,10 +200,10 @@ const MessageForm = ({ friend, refresh, friends }) => {
     }
   };
 
-  // socket.on('chat', function (data) {
-  //   setNewMessage(data.message);
-  //   console.log({ data }, 'form socket');
-  // });
+  socket.on('chat', function (data) {
+    setNewMessage(data.message);
+    console.log({ data }, 'form socket');
+  });
 
   return (
     <>
@@ -220,10 +247,12 @@ const MessageForm = ({ friend, refresh, friends }) => {
             <WebcamCapture capture={capture} selfie={message.selfie} webcamRef={webcamRef} />
           )}
         </div>
+        <FamilyMessages messages={messages} name={name} />
+        <Input message={message} setMessage={setMessage} sendMessage={handleSubmit} />
       </MessageFormWrapper>
       {/* )} */}
     </>
   );
 };
 
-export default MessageForm;
+export default MessageFormChat;

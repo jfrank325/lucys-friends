@@ -92,6 +92,14 @@ router.get('/getAll', (req, res) => {
     .populate('_requests')
     .populate('friends')
     .populate({ path: '_families', ref: '_members', populate: { path: '_members', model: 'User' } })
+    .populate({
+      path: '_families',
+      ref: '_messages',
+      populate: { path: '_messages', model: 'Message' },
+      // populate: { model: 'Message', ref: '_author' },
+      // populate: { path: '_author', model: 'User' },
+      // populate: { path: '_author', model: 'User' },
+    })
     .then((requesters) => {
       res.json(requesters);
     })

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Message = require('../models/Messages');
 const User = require('../models/User');
+const Family = require('../models/Family');
 
 router.post('/messages', (req, res) => {
   const { selfie, content, image, video, friend } = req.body;
@@ -26,7 +27,7 @@ router.post('/messages', (req, res) => {
 });
 
 router.post('/messages/forAll', (req, res) => {
-  const { selfie, content, image, video, friends } = req.body;
+  const { selfie, content, image, video, friends, family } = req.body;
   Message.create({
     selfie,
     content,
@@ -39,6 +40,7 @@ router.post('/messages/forAll', (req, res) => {
       res.json(messageDocument);
       User.updateMany({ _id: { $in: friends } }, { $addToSet: { _messages: messageId } }, { new: true }).exec();
       User.findByIdAndUpdate(req.user._id, { $addToSet: { _authoredMessages: messageId } }, { new: true }).exec();
+      Family.findByIdAndUpdate(family, { $addToSet: { _messages: messageId } }, { new: true }).exec();
     })
     .catch((err) => {
       res.status(500).json({

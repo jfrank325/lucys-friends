@@ -16,4 +16,18 @@ router.post('/create', (req, res) => {
   });
 });
 
+router.get('/family/:id', (req, res) => {
+  const family = req.params.id;
+  Family.findById(family)
+    .populate('_messages')
+    .populate('_members')
+    .populate({ path: '_messages', ref: '_author', populate: { path: '_author', model: 'User' } })
+    .then((family) => {
+      res.json(family);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: `We could not get Family` });
+    });
+});
+
 module.exports = router;
