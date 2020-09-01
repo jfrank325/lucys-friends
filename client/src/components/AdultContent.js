@@ -5,7 +5,6 @@ const AdultContentWrapper = styled.div`
   display: flex;
   height: 2.5rem;
   align-items: center;
-
   img {
     width: auto;
     height: 2.1rem;

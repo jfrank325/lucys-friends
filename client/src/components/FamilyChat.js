@@ -3,25 +3,35 @@ import io from 'socket.io-client';
 import FamilyMessages from './FamilyMessages';
 import Input from './Input';
 import { UserContext } from '../contexts/userContext';
+import { FamilyContext } from '../contexts/familyContext';
 import Axios from 'axios';
 const PORT = process.env.SERVER;
 const socket = io(PORT);
 
 const FamilyChat = (props) => {
+  const { fam } = useContext(FamilyContext);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
   const [oldMessages, setOldMessages] = useState();
+  const [localFamily, setLocalFamily] = useState();
+  const [family, setFamily] = useState(fam);
   const { user } = useContext(UserContext);
-  const { family } = props.location;
-  // const fam = useRef(family);
-  const name = user.username;
-  const id = family._id;
+  const name = user.profilePic;
+  const userPic = user.profilePic;
+  const localFam = localStorage.getItem(`fam`);
+
+  useEffect(() => {
+    setLocalFamily(localFam);
+  }, []);
+  console.log({ family });
+
+  const id = localFamily;
   const getFamily = async () => {
     try {
-      const res = await Axios.get(`/api/family/family/${id}`);
+      const res = await Axios.get(`/api/family/family/${family._id}`);
       setOldMessages(res.data._messages);
-      console.log(res.data._messages, 'family');
+      setFamily(res.data);
     } catch {
       console.log('Could not get family');
     }
@@ -29,12 +39,13 @@ const FamilyChat = (props) => {
 
   useEffect(() => {
     getFamily();
-  }, [family]);
+  }, []);
+
   const room = family.name;
   const friends = family._members.map((member) => member._id);
 
   useEffect(() => {
-    socket.emit('join', { name, room }, () => {});
+    socket.emit('join', { name, room, userPic }, () => {});
     return () => {
       socket.emit('disconnect');
       socket.off();
@@ -56,12 +67,14 @@ const FamilyChat = (props) => {
       socket.emit('sendMessage', message, () => setMessage(''));
     }
     try {
-      const res = await Axios.post('/api/messages/forAll', {
+      const res = await Axios.post('/api/messages/forFamily', {
         content: message,
-        friends: friends,
+
         family: family._id,
       });
+      // setMessages(...messages, res.data);
       console.log(res.data, 'message');
+      return;
     } catch {
       console.log('could not submit');
     }

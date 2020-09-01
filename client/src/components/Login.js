@@ -17,7 +17,7 @@ const LoginWrapper = styled.div`
       select {
         background-color: var(--yellow);
         border: none;
-        border-radius: 25px;
+        border-radius: 100 / 2;
         padding: 0.3rem 0.5rem;
         option {
         }

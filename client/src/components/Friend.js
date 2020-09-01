@@ -32,13 +32,13 @@ const FriendWrapper = styled.div`
         ${'' /* border: solid 0.2rem var(--sky);
         transform: scaleY(0.99);
         transform: scaleX(0.99); */}
-        transform: translateX(5%);
+        transform: translateX(3%);
       }
       to {
         ${'' /* border: solid 0.2rem white;
         transform: scaleY(1.01);
         transform: scaleX(1.01); */}
-        transform: translateX(-5%);
+        transform: translateX(-3%);
       }
     }
     animation: border_change 0.5s infinite ease-in-out alternate;

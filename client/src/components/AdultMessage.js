@@ -15,6 +15,7 @@ const AdultMessageWrapper = styled.div`
 
 const AdultMessage = ({ message }) => {
   const { content, created_at, image, selfie, video, _author } = message;
+  console.log(message, 'adult message');
   return (
     <AdultMessageWrapper>
       {/* {image && <AdultImage image={image} authorImage={_author.profilePic} author={_author.username} />}

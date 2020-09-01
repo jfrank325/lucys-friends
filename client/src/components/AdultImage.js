@@ -7,7 +7,7 @@ const AdultImageWrapper = styled.div`
   .author-image {
     width: auto;
     height: 2.1rem;
-    border-radius: 25px;
+    border-radius: 100 / 2;
     margin: 0.1rem 0.5 0 0;
   }
 `;

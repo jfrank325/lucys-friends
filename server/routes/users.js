@@ -74,6 +74,18 @@ router.get('/messages', (req, res) => {
     });
 });
 
+router.get('/author', (req, res) => {
+  User.findById(req.user._id)
+    .populate({ path: '_authoredMessages', ref: '_author', populate: { path: '_author', model: 'User' } })
+    .populate({ path: '_authoredMessage', Model: 'Message' })
+    .then((authors) => {
+      res.json(authors);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'We could not retrieve authors' });
+    });
+});
+
 router.get('/baby/messages/:id', (req, res) => {
   User.findById(req.params.id)
     .populate('_messages')

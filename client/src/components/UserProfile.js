@@ -77,7 +77,9 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    let filteredPeople = [...people].filter((person) => person.username.toLowerCase().includes(query.toLowerCase()));
+    let filteredPeople = [...people].filter(
+      (person) => person.username.toLowerCase().includes(query.toLowerCase()) && person._id !== user._id
+    );
     if (query.length > 0) {
       setQueryPeople(filteredPeople);
     } else {
