@@ -9,7 +9,7 @@ const MessageWrapper = styled.div`
   border: 0.05rem solid var(--sky);
   margin: 0.5rem 1rem;
   border-radius: 5px;
-  img {
+  .prof-pic {
     width: auto;
     height: 2.1rem;
     border-radius: 25px;
@@ -19,9 +19,18 @@ const MessageWrapper = styled.div`
     padding-left: 0.5rem;
     font-size: 0.9rem;
   }
+  cursor: pointer;
+  img {
+    height: auto;
+    width: 320px;
+  }
+  video {
+    height: auto;
+    width: 320px;
+  }
 `;
 
-const FamilyMessage = ({ message: { user, text }, name }) => {
+const FamilyMessage = ({ message: { user, content, image, selfie, video }, name }) => {
   let isSentByCurrentUser = false;
 
   // const trimmedName = name.trim();
@@ -32,13 +41,19 @@ const FamilyMessage = ({ message: { user, text }, name }) => {
 
   return isSentByCurrentUser ? (
     <MessageWrapper>
-      <img src={name} alt={name} />
-      <p>{text}</p>
+      <img className="prof-pic" src={name} alt={name} />
+      {content && <h3>{content}</h3>}
+      {image && <img src={image} alt="Smile" />}
+      {selfie && <img src={selfie} alt="Smile" />}
+      {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />}
     </MessageWrapper>
   ) : (
     <MessageWrapper>
-      <p>{text}</p>
-      <img src={user} alt={user} />
+      <img className="prof-pic" src={name} alt={name} />
+      {content && <h3>{content}</h3>}
+      {image && <img src={image} alt="Smile" />}
+      {selfie && <img src={selfie} alt="Smile" />}
+      {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />}
     </MessageWrapper>
   );
 };

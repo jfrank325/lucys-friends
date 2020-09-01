@@ -65,7 +65,13 @@ io.on('connect', (socket) => {
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
 
-    io.to(user.room).emit('message', { user: user.name, text: message });
+    io.to(user.room).emit('message', {
+      user: user.name,
+      content: message.content,
+      selfie: message.selfie,
+      image: message.image,
+      video: message.video,
+    });
 
     callback();
   });

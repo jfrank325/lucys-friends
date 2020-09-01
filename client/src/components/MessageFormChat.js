@@ -76,25 +76,6 @@ const MessageFormChat = ({ friend, refresh, friends }) => {
     loading: 'waiting',
   });
 
-  useEffect(() => {
-    const name = user.username;
-    const room = [user.username, friend.username].sort();
-    socket.emit('join', { name, room }, () => {});
-    return () => {
-      socket.emit('disconnect');
-      socket.off();
-    };
-  }, [PORT]);
-
-  useEffect(() => {
-    socket.on('message', (message) => {
-      setMessages([...messages, message]);
-    });
-    socket.on('roomData', ({ users }) => {
-      setMembers(users);
-    });
-  }, [messages]);
-
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot();
 

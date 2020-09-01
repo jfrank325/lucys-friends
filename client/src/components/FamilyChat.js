@@ -5,12 +5,19 @@ import Input from './Input';
 import { UserContext } from '../contexts/userContext';
 import { FamilyContext } from '../contexts/familyContext';
 import Axios from 'axios';
+import Input2 from './Input2';
 const PORT = process.env.SERVER;
 const socket = io(PORT);
 
 const FamilyChat = (props) => {
   const { fam } = useContext(FamilyContext);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({
+    selfie: '',
+    content: '',
+    image: '',
+    video: '',
+    loading: 'waiting',
+  });
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
   const [oldMessages, setOldMessages] = useState();
@@ -68,9 +75,11 @@ const FamilyChat = (props) => {
     }
     try {
       const res = await Axios.post('/api/messages/forFamily', {
-        content: message,
-
+        content: message.content,
         family: family._id,
+        selfie: message.selfie,
+        image: message.image,
+        video: message.video,
       });
       // setMessages(...messages, res.data);
       console.log(res.data, 'message');
@@ -83,7 +92,7 @@ const FamilyChat = (props) => {
   return (
     <div>
       <FamilyMessages messages={messages} oldMessages={oldMessages} name={name} />
-      <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+      <Input2 message={message} setMessage={setMessage} sendMessage={sendMessage} />
     </div>
   );
 };
