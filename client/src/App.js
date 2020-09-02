@@ -45,7 +45,7 @@ const App = (props) => {
               <Route exact path="/baby/profile/:id" render={(props) => <NonUserProfile {...props} />} />
               <Route exact path="/settings" render={(props) => <Settings {...props} />} />
               <Route exact path="/profile" render={(props) => <UserProfile {...props} />} />
-              <Route exact path="/familyChat" render={(props) => <FamilyChat history={props.history} {...props} />} />
+              <Route exact path="/familyChat" render={(props) => <FamilyChat {...props} />} />
             </div>
           </DndProvider>
         </FamilyContext.Provider>

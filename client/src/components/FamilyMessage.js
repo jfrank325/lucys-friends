@@ -42,7 +42,7 @@ const FamilyMessage = ({ message: { user, content, image, selfie, video }, name 
   return isSentByCurrentUser ? (
     <MessageWrapper>
       <img className="prof-pic" src={name} alt={name} />
-      {content && <h3>{content}</h3>}
+      {content && <p>{content}</p>}
       {image && <img src={image} alt="Smile" />}
       {selfie && <img src={selfie} alt="Smile" />}
       {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />}
@@ -50,7 +50,7 @@ const FamilyMessage = ({ message: { user, content, image, selfie, video }, name 
   ) : (
     <MessageWrapper>
       <img className="prof-pic" src={name} alt={name} />
-      {content && <h3>{content}</h3>}
+      {content && <p>{content}</p>}
       {image && <img src={image} alt="Smile" />}
       {selfie && <img src={selfie} alt="Smile" />}
       {video && <video autoPlay loop muted src={video} controls controlsList="nodownload" />}

@@ -4,12 +4,18 @@ import { FamilyContext } from '../contexts/familyContext';
 
 const Family = ({ family }) => {
   const { fam, setThisFamily } = useContext(FamilyContext);
-  setThisFamily(family);
-  const setLocalFam = () => localStorage.setItem(`fam`, family._id);
 
-  useEffect(() => {
+  const setLocalFam = () => localStorage.setItem(`fam`, JSON.stringify({ id: family._id, room: family.name }));
+
+  const newFam = () => {
     setLocalFam();
-  }, [fam]);
+    setThisFamily(family);
+  };
+
+  // useEffect(() => {
+  //   setLocalFam();
+  //   setThisFamily(family);
+  // }, [fam]);
   // const id = family._id;
   const linkObj = {
     pathname: `/familyChat`,
@@ -17,7 +23,7 @@ const Family = ({ family }) => {
   };
   // console.log({ family });
   return (
-    <Link to={linkObj}>
+    <Link to={linkObj} onClick={() => newFam()}>
       <h4>{family.name}</h4>
     </Link>
   );

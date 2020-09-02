@@ -21,22 +21,19 @@ const FamilyChat = (props) => {
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
   const [oldMessages, setOldMessages] = useState();
-  const [localFamily, setLocalFamily] = useState();
-  const [family, setFamily] = useState(fam);
+  const localFam = JSON.parse(localStorage.getItem(`fam`));
+  // const [localFamilyId, setLocalFamilyId] = useState(localFam);
+  const [family, setFamily] = useState();
   const { user } = useContext(UserContext);
   const name = user.profilePic;
   const userPic = user.profilePic;
-  const localFam = localStorage.getItem(`fam`);
+  const room = localFam.room;
+  console.log({ localFam });
+  // const setLocalFam = () => localStorage.setItem(`fam`, localFamilyId);
 
-  useEffect(() => {
-    setLocalFamily(localFam);
-  }, []);
-  console.log({ family });
-
-  const id = localFamily;
   const getFamily = async () => {
     try {
-      const res = await Axios.get(`/api/family/family/${family._id}`);
+      const res = await Axios.get(`/api/family/family/${localFam.id}`);
       setOldMessages(res.data._messages);
       setFamily(res.data);
     } catch {
@@ -45,19 +42,20 @@ const FamilyChat = (props) => {
   };
 
   useEffect(() => {
-    getFamily();
+    setTimeout(() => {
+      getFamily();
+    }, 200);
   }, []);
 
-  const room = family.name;
-  const friends = family._members.map((member) => member._id);
-
   useEffect(() => {
-    socket.emit('join', { name, room, userPic }, () => {});
-    return () => {
-      socket.emit('disconnect');
-      socket.off();
-    };
-  }, [PORT]);
+    setTimeout(() => {
+      socket.emit('join', { name, room, userPic }, () => {});
+      return () => {
+        socket.emit('disconnect');
+        socket.off();
+      };
+    }, 1500);
+  }, []);
 
   useEffect(() => {
     socket.on('message', (message) => {

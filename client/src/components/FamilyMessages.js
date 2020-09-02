@@ -5,26 +5,26 @@ import AdultMessage from './AdultMessage';
 import Axios from 'axios';
 
 const FamilyMessages = ({ oldMessages, messages, name }) => {
-  const [authoredMessage, setAuthoredMessage] = useState();
+  // const [authoredMessage, setAuthoredMessage] = useState();
   // const authors = messages.length > 0 && messages.map((message) => message.user);
   // console.log({ authors });
 
-  const getAuthors = async () => {
-    if (messages.length > 0) {
-      try {
-        const res = await Axios.get('api/auth/author');
-        setAuthoredMessage(res.data._authoredMessages.slice(-1));
-        console.log(res.data, 'authored');
-      } catch {
-        console.log('Could not get authors');
-      }
-    }
-  };
+  // const getAuthors = async () => {
+  //   if (messages.length > 0) {
+  //     try {
+  //       const res = await Axios.get('api/auth/author');
+  //       setAuthoredMessage(res.data._authoredMessages.slice(-1));
+  //       console.log(res.data, 'authored');
+  //     } catch {
+  //       console.log('Could not get authors');
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    getAuthors();
-  }, [messages.length]);
-  console.log(authoredMessage, 'authoredMessage');
+  // useEffect(() => {
+  //   getAuthors();
+  // }, [messages.length]);
+  // console.log(authoredMessage, 'authoredMessage');
   return (
     <ScrollToBottom className="messages">
       {oldMessages &&

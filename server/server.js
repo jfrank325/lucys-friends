@@ -16,7 +16,7 @@ const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 // Don't redirect if the hostname is `localhost:port` or the route is `/insecure`
 app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
 // Allow cross-origin
-const io = socket(server);
+const io = socket(server, { perMessageDeflate: false });
 
 app.use(cors());
 
