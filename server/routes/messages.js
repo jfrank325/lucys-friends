@@ -70,4 +70,17 @@ router.post('/messages/forFamily', (req, res) => {
       });
     });
 });
+
+router.get('/messages/message', (req, res) => {
+  const { id } = req.body;
+  Message.findById(id)
+    .populate({ path: '_author', model: 'User' })
+    .then((message) => {
+      res.json(message);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'We could not retrieve message' });
+    });
+});
+
 module.exports = router;

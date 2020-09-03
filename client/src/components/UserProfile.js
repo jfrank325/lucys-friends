@@ -10,6 +10,7 @@ import SearchPeople from './SearchPeople';
 import Views from './Views';
 import Families from './Families';
 import MessageFormChat from './MessageFormChat';
+import Album from './Album';
 
 const ProfileWrapper = styled.div`
   input {
@@ -98,9 +99,10 @@ const UserProfile = () => {
       <SearchPeople query={query} search={search} />
       {query && query.length > 0 && <Babies babies={queryPeople} />}
       <Requests requesters={requesters} refresh={getUserInfo} />
-      <Families families={families} />
+      {view === 'Families' && <Families families={families} />}
       {view === 'Friends' && <Friends refresh={getPeople} messages={messages} friends={friends} myProfile={true} />}
       {view === 'Messages' && <AdultMessages messages={messages} />}
+      {view === 'Album' && <Album />}
     </ProfileWrapper>
   );
 };

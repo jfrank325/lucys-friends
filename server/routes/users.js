@@ -150,6 +150,20 @@ router.post(`/request`, (req, res) => {
     });
 });
 
+router.post('/album', (req, res) => {
+  const { entry } = req.body;
+  User.findByIdAndUpdate(req.user._id, { $addToSet: { _albumImages: entry } }, { new: true })
+    .exec()
+    .then((entry) => {
+      res.json(entry);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
+
 router.post('/accepted/:id', (req, res) => {
   const friendId = req.params.id;
   const user = req.user._id;

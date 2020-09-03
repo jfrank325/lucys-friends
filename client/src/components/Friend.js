@@ -50,7 +50,7 @@ const Friend = ({ friend, refresh, messages, myProfile }) => {
   const [newMessage, setNewMessage] = useState();
   const { user } = useContext(UserContext);
 
-  const seen = (id) => !user._seenMessages.includes(id) && setNewMessage(true);
+  const notSeen = (id) => !user._seenMessages.includes(id) && setNewMessage(true);
 
   const [{ isDragging }, drag] = useDrag({
     item: {
@@ -84,7 +84,7 @@ const Friend = ({ friend, refresh, messages, myProfile }) => {
               message={message}
               toggleMessage={() => setShowMessage(!showMessage)}
               showMessage={showMessage}
-              seen={seen}
+              notSeen={notSeen}
             />
           ))}
       </div>

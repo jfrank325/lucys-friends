@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import Axios from 'axios';
 
@@ -14,11 +14,13 @@ const MessageWrapper = styled.div`
   }
 `;
 
-const Message = ({ message, showMessage, seen }) => {
+const Message = ({ message, showMessage, notSeen }) => {
   const { content, image, video, selfie, _id } = message;
+  // const [updatedMessage, setUpdatedMessage] = useState(message);
+  const didMountRef = useRef(false);
 
   useEffect(() => {
-    seen(_id);
+    notSeen(_id);
   }, [_id]);
 
   const nowSeen = async () => {
@@ -31,6 +33,24 @@ const Message = ({ message, showMessage, seen }) => {
       console.log('Could not add this message to seen messages');
     }
   };
+
+  // const getUpdatedMessage = async () => {
+  //   try {
+  //     const res = await Axios.get(`/api/messages/message`, {
+  //       id: _id,
+  //     });
+  //     console.log(res.data, 'updatedMessage');
+  //     setUpdatedMessage(res.data);
+  //   } catch {
+  //     console.log('Could not get updated messages');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (didMountRef.current) {
+  //     getUpdatedMessage();
+  //   } else didMountRef.current = true;
+  // }, [nowSeen]);
 
   return (
     <MessageWrapper>

@@ -55,6 +55,11 @@ const userSchema = new Schema(
         ref: 'Family',
       },
     ],
+    _albumImages: [
+      {
+        type: String,
+      },
+    ],
     emailNotifications: {
       type: Boolean,
       default: false,

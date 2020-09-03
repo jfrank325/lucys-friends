@@ -42,16 +42,16 @@ const FriendProfileWrapper = styled.div`
 `;
 
 const NonUserProfile = (props) => {
-  const babyId = props.match.params.id;
+  const friendId = props.match.params.id;
   const [babiesFriends, setBabiesFriends] = useState([]);
   const [messages, setMessages] = useState([]);
   const { user } = useContext(UserContext);
 
-  console.log(babyId);
+  console.log(friendId);
   const getFriends = async () => {
     try {
-      const res = await axios.get(`/api/auth/babies/friends/${babyId}`, {
-        id: babyId,
+      const res = await axios.get(`/api/auth/babies/friends/${friendId}`, {
+        id: friendId,
       });
       console.log(res.data, 'babys friends');
       setBabiesFriends(res.data);
@@ -62,11 +62,11 @@ const NonUserProfile = (props) => {
 
   useEffect(() => {
     getFriends();
-  }, [babyId]);
+  }, [friendId]);
 
   const getMessages = async () => {
     try {
-      const res = await axios.get(`/api/auth/baby/messages/${babyId}`);
+      const res = await axios.get(`/api/auth/baby/messages/${friendId}`);
       setMessages(res.data._messages);
     } catch {
       console.log('Could not get messages');
