@@ -228,6 +228,19 @@ router.post('/settings/profilePublic', (req, res) => {
     });
 });
 
+router.get('/settings', (req, res) => {
+  const id = req.user._id;
+  User.findById(id)
+    .then((userDocument) => {
+      res.json(userDocument);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
+
 router.post('/seen', (req, res) => {
   const id = req.user._id;
   const seenMessage = req.body.seenMessage;

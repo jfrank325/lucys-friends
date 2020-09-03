@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { UserContext } from '../contexts/userContext';
+import Axios from 'axios';
 
 const SettingWrapper = styled.div`
   display: flex;
@@ -50,14 +51,46 @@ const SettingWrapper = styled.div`
   }
 `;
 
-const Setting = ({ updateSetting, message }) => {
-  const [selected, setSelected] = useState(false);
+const Setting = ({ message, setting }) => {
+  const { user } = useContext(UserContext);
+  const [selected, setSelected] = useState(user[setting]);
+  const [updatedUser, setUpdatedUser] = useState(user);
+  const didMountRef = useRef(false);
+  const [selected2, setSelected2] = useState(user[setting]);
+
+  const updateSetting = async () => {
+    try {
+      const res = await Axios.post(`/api/auth/settings/${setting}`);
+      console.log(res.data, 'settings');
+    } catch {
+      console.log('nope');
+    }
+  };
 
   const updateAndToggle = () => {
     updateSetting();
     setSelected(!selected);
   };
 
+  const getSetting = async () => {
+    try {
+      const res = await Axios.get(`/api/auth/settings`);
+      console.log(res.data, 'get setting');
+      setUpdatedUser(res.data[setting]);
+    } catch {
+      console.log('Could not get Setting');
+    }
+  };
+
+  useEffect(() => {
+    if (didMountRef.current) {
+      getSetting();
+      setSelected2(updatedUser.setting);
+    } else didMountRef.current = true;
+  }, [selected]);
+
+  console.log({ updatedUser });
+  console.log({ setSelected2 });
   return (
     <SettingWrapper>
       <div className={selected ? 'button-background-on' : 'button-background'}>

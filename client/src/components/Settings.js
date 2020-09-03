@@ -16,39 +16,12 @@ const SettingsWrapper = styled.div`
 `;
 
 const Settings = () => {
-  const updateEmailPreference = async () => {
-    try {
-      const res = await Axios.post('/api/auth/settings/emailNotifications');
-      console.log(res.data, 'settings');
-    } catch {
-      console.log('nope');
-    }
-  };
-
-  const updateProfilePublic = async () => {
-    try {
-      const res = await Axios.post('/api/auth/settings/profilePublic');
-      console.log(res.data, 'settings');
-    } catch {
-      console.log('nope');
-    }
-  };
-
-  const updateVisibleToFriends = async () => {
-    try {
-      const res = await Axios.post('/api/auth/settings/profileVisibleToFriends');
-      console.log(res.data, 'settings');
-    } catch {
-      console.log('nope');
-    }
-  };
-
   return (
     <SettingsWrapper>
       <div className="inner-wrapper">
-        <Setting updateSetting={updateEmailPreference} message={'Allow Email Notifications'} />
-        <Setting updateSetting={updateVisibleToFriends} message={'Allow Profile To Be Visible To Friends'} />
-        <Setting updateSetting={updateProfilePublic} message={'Allow Profile To Visible To Public'} />
+        <Setting message={'Allow Email Notifications'} setting={'emailNotifications'} />
+        <Setting message={'Allow Profile To Be Visible To Friends'} setting={'profileVisibleToFriends'} />
+        <Setting message={'Allow Profile To Visible To Public'} setting={'profilePublic'} />
       </div>
     </SettingsWrapper>
   );
