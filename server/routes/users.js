@@ -97,8 +97,8 @@ router.get('/baby/messages/:id', (req, res) => {
     });
 });
 
-router.get('/getAll', (req, res) => {
-  const id = req.user._id;
+router.get('/getAll/:id', (req, res) => {
+  const id = req.params.id;
   User.findById(id)
     .populate({ path: '_messages', ref: '_author', populate: { path: '_author', model: 'User' } })
     .populate('_requests')

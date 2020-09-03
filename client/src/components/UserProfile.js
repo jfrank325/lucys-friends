@@ -61,14 +61,14 @@ const UserProfile = () => {
 
   const getUserInfo = async () => {
     try {
-      const res = await Axios.get(`/api/auth/getAll`);
+      const res = await Axios.get(`/api/auth/getAll/${user._id}`);
       const { friends } = res.data;
       setRequesters(res.data._requests.filter((requester) => !user.friends.includes(requester._id)));
       setFriends([...friends]);
       setMessages(res.data._messages);
       setFamilies(res.data._families);
     } catch {
-      console.log('Could not get requests');
+      console.log('Could not get all');
     }
   };
 

@@ -65,9 +65,10 @@ const Friend = ({ friend, refresh, messages, myProfile }) => {
 
   return (
     <FriendWrapper className={newMessage ? 'new' : 'old'} ref={drag}>
+      {friend.type === 'BABY' && <Link to={`/baby/profile/${friend._id}`}>See {friend.username}'s Profile</Link>}
       <div onClick={() => setShowMessage(!showMessage)}>
         <h2>{friend.username}</h2>
-        {friend.type === 'BABY' && <Link to={`/baby/profile/${friend._id}`}>See {friend.username}'s Profile</Link>}
+
         {!showMessage && (
           <img
             className={newMessage ? 'new' : 'old'}

@@ -6,6 +6,7 @@ import Friends from './Friends';
 import Babies from './Babies';
 import MessageForm from './MessageForm';
 import { UserContext } from '../contexts/userContext';
+import Axios from 'axios';
 
 const FriendProfileWrapper = styled.div`
   input {
@@ -43,44 +44,31 @@ const FriendProfileWrapper = styled.div`
 
 const NonUserProfile = (props) => {
   const friendId = props.match.params.id;
-  const [babiesFriends, setBabiesFriends] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [friends, setFriends] = useState([]);
   const { user } = useContext(UserContext);
 
   console.log(friendId);
-  const getFriends = async () => {
+  const getUserInfo = async () => {
     try {
-      const res = await axios.get(`/api/auth/babies/friends/${friendId}`, {
-        id: friendId,
-      });
-      console.log(res.data, 'babys friends');
-      setBabiesFriends(res.data);
-    } catch {
-      console.log('Could not get babies');
-    }
-  };
-
-  useEffect(() => {
-    getFriends();
-  }, [friendId]);
-
-  const getMessages = async () => {
-    try {
-      const res = await axios.get(`/api/auth/baby/messages/${friendId}`);
+      const res = await Axios.get(`/api/auth/getAll/${friendId}`);
+      const { friends } = res.data;
+      setFriends([...friends]);
       setMessages(res.data._messages);
     } catch {
-      console.log('Could not get messages');
+      console.log('Could not get requests');
     }
   };
+
   useEffect(() => {
-    getMessages();
-  }, []);
+    getUserInfo();
+  }, [friendId]);
 
   console.log({ user });
   return (
     <FriendProfileWrapper>
       <h2></h2>
-      <Friends refresh={getFriends} myProfile={false} messages={messages} friends={babiesFriends} />
+      <Friends refresh={getUserInfo} myProfile={false} messages={messages} friends={friends} />
     </FriendProfileWrapper>
   );
 };

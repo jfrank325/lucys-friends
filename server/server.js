@@ -7,6 +7,8 @@ const logger = require('morgan');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();
 // const http = require('http').Server(app);
 const socket = require('socket.io');
 require('./session')(app);
@@ -19,7 +21,7 @@ app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
 const io = socket(server, { perMessageDeflate: false });
 
 app.use(cors());
-
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true })); // sets the `body` object in the `request` with the values from an HTML POST form
 
 app.use(express.json()); // sets the `body` object in the `request` with the data coming from a request with a `body` (request we'll issue with axios, fetch...)

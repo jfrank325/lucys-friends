@@ -2,10 +2,28 @@ import React, { useContext, useState } from 'react';
 import { UserContext } from '../contexts/userContext';
 import styled from 'styled-components';
 import Axios from 'axios';
+import Plus from '../images/plus.png';
+import AlbumImages from './AlbumImages';
 
 const AlbumWrapper = styled.div`
   input[type='file'] {
     display: none;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    label {
+      background-color: lightgrey;
+      padding: 0.4rem;
+      width: min-content;
+      margin: 1rem auto;
+      img {
+        width: 1rem;
+        ${'' /* margin: 0.1rem; */}
+      }
+    }
   }
 `;
 
@@ -68,18 +86,12 @@ const Album = () => {
       <form encType="multipart/form-data" onSubmit={handleSubmit}>
         <label htmlFor="imgPath">
           <input type="file" id="imgPath" name="imgPath" onChange={uploadImage} />
-          &#43;
+          <img src={Plus} alt="add img" />
         </label>
-        <button>Add Image</button>
+        {albumEntry.entry && <img src={albumEntry.entry} alt="album entry" />}
+        {albumEntry.loading === 'finished' && <button>Add Image</button>}
       </form>
-      {albumEntry.entry && <img src={albumEntry.entry} alt="album entry" />}
-      {user._albumImages && (
-        <div>
-          {user._albumImages.map((entry) => (
-            <img src={entry} alt="entry" />
-          ))}
-        </div>
-      )}
+      {user._albumImages && <AlbumImages images={user._albumImages} />}
     </AlbumWrapper>
   );
 };
