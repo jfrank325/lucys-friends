@@ -32,7 +32,7 @@
     "react-scroll-to-bottom": "^3.0.0",
     "react-video-recorder": "^3.17.1",
     "react-webcam": "^5.2.0",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "styled-components": "^5.1.1"
   },
   "nodemonConfig": {
